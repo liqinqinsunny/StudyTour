@@ -1,0 +1,36 @@
+//
+//  TraveIntroViewController.m
+//  StudyTour
+//
+//  Created by lqq on 16/6/3.
+//  Copyright © 2016年 lqq. All rights reserved.
+//
+
+#import "TraveIntroViewController.h"
+#import "PlayerVedioController.h"
+#import "UserInfoModel.h"
+
+@interface TraveIntroViewController ()
+@property (weak, nonatomic) IBOutlet UIImageView *videoImageView;
+
+@end
+
+@implementation TraveIntroViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+  
+    self.title = @"游学简介";
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gotoVideo)];
+    [self.videoImageView addGestureRecognizer:tapGesture];
+    UserInfoModel *infoModel = [UserInfoModel sharedUserInfo];
+    NSLog(@"%@",infoModel);
+    
+}
+- (void)gotoVideo{
+    PlayerVedioController *video = [[PlayerVedioController alloc]init];
+    
+    
+}
+
+@end

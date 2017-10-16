@@ -1,0 +1,26 @@
+//
+//  TravelNoteCoverModel.h
+//  StudyTour
+//
+//  Created by use on 16/6/3.
+//  Copyright © 2016年 魏鹏. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface TravelNoteCoverModel : NSObject
+
+@property (nonatomic, copy) NSString* coverUrl;
+@property (nonatomic, copy) NSString* coverId;
+@property (nonatomic, copy) NSString* like;
+@property (nonatomic, copy) NSString* view;
+@property (nonatomic, copy) NSString* templateId;
+@property (nonatomic, copy) NSString* title;
+@property (nonatomic, copy) NSString* tagName;
+@property (nonatomic, copy) NSString* coverThumbnailUrl;
+
+
+
++ (id)createTravelNoteCoverModelWithDict:(NSDictionary *)dict;
+
+@end

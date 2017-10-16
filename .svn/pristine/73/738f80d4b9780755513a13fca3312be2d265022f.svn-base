@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MessageCell" rowHeight="60" id="KGk-i7-Jjw" customClass="MessageCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="volume-on-copy" translatesAutoresizingMaskIntoConstraints="NO" id="QZE-u7-dpO">
+                        <rect key="frame" x="18" y="8" width="28" height="28"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="28" id="0wS-fT-87n"/>
+                            <constraint firstAttribute="width" constant="28" id="7QO-7q-NEa"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rln-VX-uuJ">
+                        <rect key="frame" x="54" y="8" width="258" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="nAZ-gC-VNA"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.58823529411764708" green="0.58823529411764708" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ote-e3-ITN">
+                        <rect key="frame" x="54" y="30" width="258" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.29803921568627451" green="0.29803921568627451" blue="0.29803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="QZE-u7-dpO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="06f-tW-FCb"/>
+                    <constraint firstItem="ote-e3-ITN" firstAttribute="leading" secondItem="rln-VX-uuJ" secondAttribute="leading" id="4vO-M1-hwG"/>
+                    <constraint firstAttribute="trailing" secondItem="rln-VX-uuJ" secondAttribute="trailing" constant="8" id="D9T-hh-UbH"/>
+                    <constraint firstItem="rln-VX-uuJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="Ixg-pA-zVw"/>
+                    <constraint firstItem="rln-VX-uuJ" firstAttribute="leading" secondItem="QZE-u7-dpO" secondAttribute="trailing" constant="8" id="f83-p8-qx5"/>
+                    <constraint firstItem="QZE-u7-dpO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="k51-W9-IQP"/>
+                    <constraint firstAttribute="bottom" secondItem="ote-e3-ITN" secondAttribute="bottom" constant="8" id="l3Y-Ej-XxP"/>
+                    <constraint firstItem="ote-e3-ITN" firstAttribute="width" secondItem="rln-VX-uuJ" secondAttribute="width" id="nhO-yd-gzH"/>
+                    <constraint firstItem="ote-e3-ITN" firstAttribute="top" secondItem="rln-VX-uuJ" secondAttribute="bottom" constant="8" id="rbK-nk-FKa"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="messageLabel" destination="ote-e3-ITN" id="gvQ-ax-Isf"/>
+                <outlet property="userDateLabel" destination="rln-VX-uuJ" id="Rff-Wc-Bfj"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="volume-on-copy" width="25" height="25"/>
+    </resources>
+</document>

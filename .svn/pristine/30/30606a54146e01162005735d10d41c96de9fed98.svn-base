@@ -1,0 +1,29 @@
+//
+//  Particularses.h
+//  StudyTourLeaderSide
+//
+//  Created by Apple on 16/5/13.
+//  Copyright © 2016年 wjp. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface Particularses : NSObject
+// 发布人姓名
+@property(nonatomic,copy) NSString *initiatorName;
+// 发布者角色
+@property(nonatomic,copy) NSString *initiatorRole;
+
+// 游记详情内容
+@property(nonatomic,copy) NSString *content;
+
+// 游记详情图片数组
+@property(nonatomic,copy) NSArray *imageArray;
+// 附件数组
+@property(nonatomic,copy) NSArray *accessoryArray;
+
+@property (nonatomic, assign) CGFloat cellHeight;
+
++ (instancetype)createPartiModelWithDict:(NSDictionary *)dict;
+
+@end

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1808" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TravelIntroSectionHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="dmK-5G-PG8">
+                    <rect key="frame" x="16" y="30" width="12" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="12" id="CVo-ep-VHg"/>
+                        <constraint firstAttribute="height" constant="16" id="Yio-lu-yhm"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="国家线路" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tyk-rE-xJo">
+                    <rect key="frame" x="40" y="27" width="270" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="1yG-DQ-Z4U"/>
+                        <constraint firstAttribute="width" constant="270" id="FW1-yW-G4M"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.95686274509803926" green="0.94117647058823528" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="tyk-rE-xJo" firstAttribute="leading" secondItem="dmK-5G-PG8" secondAttribute="trailing" constant="12" id="NHi-fb-Qz3"/>
+                <constraint firstAttribute="bottom" secondItem="tyk-rE-xJo" secondAttribute="bottom" id="WTQ-ew-Z8n"/>
+                <constraint firstItem="dmK-5G-PG8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="i81-90-I8m"/>
+                <constraint firstItem="tyk-rE-xJo" firstAttribute="centerY" secondItem="dmK-5G-PG8" secondAttribute="centerY" id="xrH-k2-UFm"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="titleLabel" destination="tyk-rE-xJo" id="nKm-oF-ClY"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_arrow.png" width="12" height="16"/>
+    </resources>
+</document>

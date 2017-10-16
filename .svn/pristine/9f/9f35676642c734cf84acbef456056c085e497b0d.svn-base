@@ -1,0 +1,158 @@
+//
+//  QuestionNaireViewController.m
+//  StudyTour
+//
+//  Created by lqq on 16/6/17.
+//  Copyright © 2016年 lqq. All rights reserved.
+//
+
+#import "QuestionNaireViewController.h"
+#import "QuestionCell.h"
+#import "MJExtension.h"
+#import "NetWorkErrorView.h"
+#import "Downloader.h"
+#import "QuestionModel.h"
+#import "ExamPaperModel.h"
+#import "NSString+Frame.h"
+#import "QuestionCellFrame.h"
+@interface QuestionNaireViewController ()<UITableViewDataSource,UITableViewDelegate>
+
+@property(nonatomic,assign) BOOL *loadCacheSuccess;
+@property(nonatomic,strong) UITableView *tableView;
+
+@property(nonatomic,strong) ExamPaperModel *examPagerModel;
+
+
+@end
+
+@implementation QuestionNaireViewController
+
+static NSString * const ID = @"questionCell";
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.title = @"新东方国际游学调查问卷";
+    
+    UITableView *tableView = [[UITableView alloc]init];
+    tableView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight);
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    [self.view addSubview:tableView];
+    self.tableView = tableView;
+    
+    [self.tableView registerClass:[QuestionCell class] forCellReuseIdentifier:ID];
+    
+    // 表头
+    UIView *headerView = [[UIView alloc]init];
+    UILabel *headLabel = [[UILabel alloc]init];
+    CGFloat w = ScreenWidth - 40 * 2;
+    headLabel.text = self.examPagerModel.ExamPaperHeadDesc;
+    headLabel.font = [UIFont systemFontOfSize:20];
+    CGFloat h = [headLabel.text heightWithFont:[UIFont systemFontOfSize:20] withinWidth:w];
+    headLabel.frame = CGRectMake(40, 80, w, h);
+    [headerView addSubview:headLabel];
+
+    headerView.frame = CGRectMake(0, 0, ScreenWidth, CGRectGetMaxY(headLabel.frame) + 80);
+    self.tableView.tableHeaderView = headerView;
+    
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.examPagerModel.QuestionList.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+    QuestionCell *cell = [tableView dequeueReusableCellWithIdentifier:ID forIndexPath:indexPath];
+    QuestionCellFrame *cellframe = [[QuestionCellFrame alloc]init];
+    cellframe.model = self.examPagerModel.QuestionList[indexPath.row];
+    cell.cellFrame = cellframe;
+    return cell;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    QuestionCellFrame *cellframe = [[QuestionCellFrame alloc]init];
+    cellframe.model = self.examPagerModel.QuestionList[indexPath.row];
+    return cellframe.rowHeight;
+}
+
+#pragma mark 从服务器读数据
+- (void)loadDataFromSever
+{
+    Downloader *download = [[Downloader alloc]init];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    param[@"taskId"] = self.taskId;
+   
+    NSString *cachePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"question_%@.data",self.taskId]];
+    
+    [download POST:QuestionnaireShow cachePath:cachePath param:param wating:^{
+        
+    } fail:^{
+        if (_loadCacheSuccess) {
+            [self loadDataFromCache];
+            [self showTips:NetWorkTips] ;
+        } else {
+            [self addNetWorkErrorView];
+        }
+    } success:^(NSDictionary *originData) {
+        [self parseData:originData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+        
+    } refresh:YES];
+    
+}
+// 添加错误提示页
+- (void)addNetWorkErrorView
+{
+    NetWorkErrorView *errorView = [[NetWorkErrorView alloc] init];
+    errorView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+    __weak typeof(errorView) _ev = errorView;
+    __weak typeof(self) weakself = self;
+    [errorView setOperateBlock:^{
+        __strong NetWorkErrorView *_sev = _ev;
+        [_sev removeFromSuperview];
+        [weakself loadDataFromSever];
+        _sev = nil;
+    }];
+    [self.view addSubview:errorView];
+}
+#pragma mark 从缓存读数据
+- (void)loadDataFromCache
+{
+    NSString *cachePath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject] stringByAppendingPathComponent:[NSString stringWithFormat:@"question_%@.data",self.taskId]];
+    
+    NSDictionary *data = [self readSaveData:cachePath];
+    if (data == nil) {
+        _loadCacheSuccess = NO;
+        return;
+    }else {
+        _loadCacheSuccess = YES;
+        [self parseData:data];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    }
+}
+#pragma mark 解析数据
+- (void)parseData:(NSDictionary *)data
+{
+    self.examPagerModel = [ExamPaperModel mj_objectWithKeyValues:data];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self loadDataFromCache];
+    [self loadDataFromSever];
+}
+
+
+@end

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1808" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PlayerController">
+            <connections>
+                <outlet property="myWebView" destination="1Zz-2e-S54" id="I0q-MW-lTh"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Zz-2e-S54">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
+                </webView>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pp.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="vLT-sV-zlv">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                </imageView>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="playIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="BbO-an-w2j">
+                    <rect key="frame" x="120" y="244" width="80" height="80"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="G3F-W4-1Hc"/>
+                        <constraint firstAttribute="height" constant="80" id="zZQ-1f-lnH"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="vLT-sV-zlv" secondAttribute="bottom" id="7IG-Ay-Hn3"/>
+                <constraint firstAttribute="trailing" secondItem="1Zz-2e-S54" secondAttribute="trailing" id="DRX-H4-UKZ"/>
+                <constraint firstAttribute="bottom" secondItem="1Zz-2e-S54" secondAttribute="bottom" id="GAo-4S-5Zz"/>
+                <constraint firstItem="BbO-an-w2j" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="JNY-1h-Jiu"/>
+                <constraint firstItem="1Zz-2e-S54" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JvT-nb-r8J"/>
+                <constraint firstItem="BbO-an-w2j" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="PdD-FT-dhF"/>
+                <constraint firstAttribute="trailing" secondItem="vLT-sV-zlv" secondAttribute="trailing" id="TSg-o0-H6h"/>
+                <constraint firstItem="1Zz-2e-S54" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bJ8-co-l5g"/>
+                <constraint firstItem="vLT-sV-zlv" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ewQ-JF-3gj"/>
+                <constraint firstItem="vLT-sV-zlv" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="n4W-9P-69n"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="playIcon.png" width="256" height="256"/>
+        <image name="pp.jpg" width="1242" height="2208"/>
+    </resources>
+</document>

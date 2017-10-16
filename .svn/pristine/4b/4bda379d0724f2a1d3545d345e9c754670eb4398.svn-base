@@ -1,0 +1,50 @@
+//
+//  TravelNoteCoverCell.m
+//  StudyTour
+//
+//  Created by use on 16/6/3.
+//  Copyright © 2016年 魏鹏. All rights reserved.
+//
+
+#import "TravelNoteCoverCell.h"
+#import "TravelNoteCoverModel.h"
+
+@interface TravelNoteCoverCell ()
+
+@property (weak, nonatomic) IBOutlet UILabel *tagLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *likeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *seeLabel;
+
+
+@end
+
+@implementation TravelNoteCoverCell
+
+- (void)awakeFromNib {
+    // Initialization code
+}
+
+- (void)setModel:(TravelNoteCoverModel *)model
+{
+    _model = model;
+    _tagLabel.text = _model.tagName;
+    if (_model.coverUrl.length > 0) {
+        NSURL *coverImageUrl = [NSURL URLWithString:_model.coverUrl];
+        [_coverImageView sd_setImageWithURL:coverImageUrl];
+    } else {
+        _coverImageView.image = [UIImage imageNamed:@"bg_TravelNoteHome_Default"];
+    }
+    _titleLabel.text = _model.title;
+    _likeLabel.text = _model.like;
+    _seeLabel.text = _model.view;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

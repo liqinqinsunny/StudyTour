@@ -1,0 +1,23 @@
+//
+//  ParticularsesImages.h
+//  StudyTourLeaderSide
+//
+//  Created by Apple on 16/5/13.
+//  Copyright © 2016年 wjp. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface ParticularsesImages : NSObject
+// 图片id
+@property(nonatomic,copy) NSString *imageId;
+// 图片缩略图URL
+@property(nonatomic,copy) NSString *imageThumbnailUrl;
+// 图片原图URL
+@property(nonatomic,copy) NSString *imageUrl;
+
+@property(nonatomic,copy) NSString *imgWidth;
+
+@property(nonatomic,copy) NSString *imgHeight;
+
+@end

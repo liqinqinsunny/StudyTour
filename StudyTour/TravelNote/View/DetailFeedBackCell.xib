@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="DetailFeedBackCell" id="KGk-i7-Jjw" customClass="DetailFeedBackCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rdV-c7-hnQ">
+                        <rect key="frame" x="16" y="10" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="hTc-e1-M2Z"/>
+                            <constraint firstAttribute="width" constant="40" id="qnM-cf-YiG"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="吃" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BPx-iF-Chj">
+                        <rect key="frame" x="72" y="19" width="17" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E7b-Rw-oCz">
+                        <rect key="frame" x="306" y="14" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="7Me-HD-Y7d"/>
+                            <constraint firstAttribute="height" constant="32" id="MG5-4H-IHs"/>
+                        </constraints>
+                        <state key="normal" image="ic_df_noChoose.png"/>
+                        <state key="selected" image="ic_df_choose.png"/>
+                        <connections>
+                            <action selector="chooseClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="fTt-0u-kLp"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="rdV-c7-hnQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="04d-K1-bA8"/>
+                    <constraint firstAttribute="trailing" secondItem="E7b-Rw-oCz" secondAttribute="trailing" constant="37" id="Le3-1H-b5l"/>
+                    <constraint firstItem="rdV-c7-hnQ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Smd-Rj-2td"/>
+                    <constraint firstItem="E7b-Rw-oCz" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="WRU-b1-SOj"/>
+                    <constraint firstItem="BPx-iF-Chj" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dZC-4x-3nw"/>
+                    <constraint firstItem="BPx-iF-Chj" firstAttribute="leading" secondItem="rdV-c7-hnQ" secondAttribute="trailing" constant="16" id="jZW-bq-4Gc"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="chooseButton" destination="E7b-Rw-oCz" id="Kco-1e-GZq"/>
+                <outlet property="iconView" destination="rdV-c7-hnQ" id="MYm-Ob-fa3"/>
+                <outlet property="typeLabel" destination="BPx-iF-Chj" id="9uR-tV-sCb"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ic_df_choose.png" width="32" height="32"/>
+        <image name="ic_df_noChoose.png" width="32" height="32"/>
+    </resources>
+</document>

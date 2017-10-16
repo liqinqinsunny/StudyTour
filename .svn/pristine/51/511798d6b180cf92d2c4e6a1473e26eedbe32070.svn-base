@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TravelNoteUnitCell" rowHeight="100" id="KGk-i7-Jjw" customClass="TravelNoteUnitCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="199"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nHQ-C7-TqS">
+                        <rect key="frame" x="16" y="22" width="4" height="12"/>
+                        <color key="backgroundColor" red="0.1764705882" green="0.74509803919999995" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="4" id="AJe-O7-hzr"/>
+                            <constraint firstAttribute="height" constant="12" id="N6J-hb-Rey"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="龙老师" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fKx-ZY-yIy">
+                        <rect key="frame" x="28" y="19" width="42" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="导师" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kHN-EG-exe">
+                        <rect key="frame" x="74" y="19" width="24" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="3qd-fj-h7i"/>
+                            <constraint firstAttribute="width" constant="24" id="bji-ma-73x"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                <integer key="value" value="1"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                <color key="value" red="0.1764705882352941" green="0.74509803921568629" blue="0.37647058823529411" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="2"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mxs-yw-S63">
+                        <rect key="frame" x="16" y="58" width="343" height="50"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="pWA-XV-eez"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPE-4g-FMD">
+                        <rect key="frame" x="16" y="128" width="343" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="Mxs-yw-S63" secondAttribute="trailing" constant="16" id="2Sr-Hs-2kR"/>
+                    <constraint firstItem="fKx-ZY-yIy" firstAttribute="centerY" secondItem="nHQ-C7-TqS" secondAttribute="centerY" id="3aQ-DF-h5X"/>
+                    <constraint firstItem="jPE-4g-FMD" firstAttribute="top" secondItem="Mxs-yw-S63" secondAttribute="bottom" constant="20" id="8mZ-9F-Wqp"/>
+                    <constraint firstItem="Mxs-yw-S63" firstAttribute="top" secondItem="kHN-EG-exe" secondAttribute="bottom" constant="22" id="D8c-mA-k2P"/>
+                    <constraint firstItem="jPE-4g-FMD" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="IlE-Jk-mgh"/>
+                    <constraint firstItem="kHN-EG-exe" firstAttribute="leading" secondItem="fKx-ZY-yIy" secondAttribute="trailing" constant="4" id="P1h-sw-g2i"/>
+                    <constraint firstItem="Mxs-yw-S63" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="T67-at-79E"/>
+                    <constraint firstAttribute="trailing" secondItem="jPE-4g-FMD" secondAttribute="trailing" constant="16" id="TKs-jp-yX0"/>
+                    <constraint firstItem="nHQ-C7-TqS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="22" id="dQP-OC-9pg"/>
+                    <constraint firstItem="nHQ-C7-TqS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="kB1-UD-Nm8"/>
+                    <constraint firstItem="kHN-EG-exe" firstAttribute="centerY" secondItem="fKx-ZY-yIy" secondAttribute="centerY" id="vOC-vr-WbX"/>
+                    <constraint firstItem="fKx-ZY-yIy" firstAttribute="leading" secondItem="nHQ-C7-TqS" secondAttribute="trailing" constant="8" id="z2O-Kj-oCn"/>
+                </constraints>
+            </tableViewCellContentView>
+            <inset key="separatorInset" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
+            <connections>
+                <outlet property="contentLabel" destination="jPE-4g-FMD" id="gb8-xF-aPR"/>
+                <outlet property="imagesView" destination="Mxs-yw-S63" id="RDH-s3-hNY"/>
+                <outlet property="imagesViewHeightConstraint" destination="pWA-XV-eez" id="HfU-6K-1g1"/>
+                <outlet property="nameHeaderView" destination="nHQ-C7-TqS" id="DeI-Ir-RUh"/>
+                <outlet property="nameLabel" destination="fKx-ZY-yIy" id="OM3-No-lSb"/>
+                <outlet property="tagLabel" destination="kHN-EG-exe" id="Caf-Vd-nej"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

@@ -1,0 +1,155 @@
+//
+//  QuestionCell.m
+//  StudyTour
+//
+//  Created by lqq on 16/6/17.
+//  Copyright © 2016年 lqq. All rights reserved.
+//
+
+#import "QuestionCell.h"
+#import "SingleBtnView.h"
+#import "QuestionModel.h"
+#import "QuestionCellFrame.h"
+#import "RadioOrMultiModel.h"
+#import "RadioOrMultiBtn.h"
+
+#define titleFont  [UIFont fontWithName:@"Helvetica-Bold" size:14]
+#define txtColor   [UIColor colorWithHex:0x333333]
+
+@interface QuestionCell() <SingleBtnViewDelegate>
+
+@property (weak, nonatomic)  UILabel *titleLabel;
+@property (weak, nonatomic)  SingleBtnView *sectionView;
+@property(nonatomic,weak) UIView *separateView;
+@property(nonatomic,weak) UITextField *textField;
+@end
+
+@implementation QuestionCell
+
++ (instancetype)cellWithTableView:(UITableView *)tableView
+{
+    static NSString *ID = @"QuestionCell";
+    QuestionCell *cell =  [tableView dequeueReusableCellWithIdentifier:ID];
+    if (cell == nil) {
+        cell = [[QuestionCell alloc]initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
+    }
+    return cell;
+}
+- (NSMutableDictionary *)questionDict
+{
+    if (_questionDict == nil) {
+        _questionDict = [NSMutableDictionary dictionary];
+    }
+    return _questionDict;
+}
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.backgroundColor = [UIColor clearColor];
+
+        // 标题
+        UILabel *titleLabel = [[UILabel alloc]init];
+        titleLabel.textColor = txtColor;
+        titleLabel.font = titleFont;
+        titleLabel.numberOfLines = 0;
+        [self.contentView addSubview:titleLabel];
+        self.titleLabel = titleLabel;
+        // 控件
+        SingleBtnView *sectionView = [[SingleBtnView alloc]init];
+        sectionView.delegate = self;
+        [self.contentView addSubview:sectionView];
+        self.sectionView = sectionView;
+        // 文本框
+        UITextField *textField = [[UITextField alloc]init];
+        textField.textColor = txtColor;
+        textField.borderStyle = UITextBorderStyleRoundedRect;
+        [textField addTarget:self action:@selector(textFieldValChange:) forControlEvents:UIControlEventAllEditingEvents];
+        
+        [self.contentView addSubview:textField];
+        self.textField = textField;
+        // 分隔线
+        UIView *separateView = [[UIView alloc]init];
+        separateView.backgroundColor = [UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1];
+        [self.contentView addSubview:separateView];
+        self.separateView = separateView;
+        
+    }
+    return self;
+}
+- (void)textFieldValChange:(UITextField *)textfield
+{
+    self.questionText = textfield.text;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:QuestionCellOptionTextChangeNotification object:nil userInfo:@{QuestionCellOptionTextKey:self.questionText , QuestionCellViewkey : self.cellFrame , @"textfiled" : textfield}];
+}
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if ([self.textField isFirstResponder]) {
+        [self.textField resignFirstResponder];
+        [self endEditing:YES];
+    }
+}
+- (void)setCellFrame:(QuestionCellFrame *)cellFrame
+{
+    _cellFrame = cellFrame;
+    
+    self.titleLabel.text = [NSString stringWithFormat:@"%@.%@",cellFrame.model.SortId, cellFrame.model.title];
+    self.sectionView.model = cellFrame.model;
+    
+    if ([cellFrame.model.type isEqualToString:@"填空"]) {
+        self.sectionView.hidden = YES;
+        self.textField.hidden = NO;
+        self.textField.placeholder = cellFrame.model.OptionText;
+        self.textField.frame = cellFrame.textFieldFrame;
+    } else {
+        self.sectionView.hidden = NO;
+
+        if ([cellFrame.model.OptionText isEqualToString:@""]) {
+          self.textField.hidden = YES;
+        } else {
+            self.textField.hidden = NO;
+            self.textField.placeholder = cellFrame.model.OptionText;
+            self.textField.frame = cellFrame.textFieldFrame;
+        }
+    }
+    
+    self.titleLabel.frame = cellFrame.titleFrame;
+    self.sectionView.frame = cellFrame.viewFrame;
+    self.separateView.frame = cellFrame.separateViewFrame;
+}
+- (void)setRowIndex:(NSInteger)rowIndex
+{
+    _rowIndex = rowIndex;
+    self.textField.tag = rowIndex;
+}
+
+- (void)SingleBtnView:(SingleBtnView *)singleBtnView BtnClick:(RadioOrMultiBtn *)btn
+{
+    [singleBtnView.subviews enumerateObjectsUsingBlock:^(RadioOrMultiBtn *button, NSUInteger idx, BOOL * _Nonnull stop) {
+        RadioOrMultiModel *model = button.model;
+        [self.questionDict setObject:model.value forKey:model.Option];
+        
+    }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:QuestionCellViewClickNotification object:nil userInfo:@{ QuestionCellViewkey: self.cellFrame , QuestionStrKey : self.questionDict }];
+}
+
+- (void)setQuestDict:(NSDictionary *)questDict
+{
+    _questDict = questDict;
+
+    self.sectionView.questDict = questDict;
+    
+}
+
+- (void)setQuestionText:(NSString *)questionText
+{
+    _questionText = questionText;
+    self.textField.text = questionText;
+}
+
+@end
+

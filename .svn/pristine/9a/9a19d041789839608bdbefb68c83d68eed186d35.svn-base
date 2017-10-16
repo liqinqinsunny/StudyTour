@@ -1,0 +1,808 @@
+//
+//  WJPWriteTravelNoteViewController.m
+//  StudyTourLeaderSide
+//
+//  Created by use on 16/5/10.
+//  Copyright © 2016年 wjp. All rights reserved.
+//
+typedef NS_ENUM(NSUInteger, WriteTNViewTag) {
+    PickerViewTag = 60,
+    WJPMast_View_Tag,
+    WJPSave_Button_Tag,
+    ImageButtonTag = 120,
+};
+
+#import "WJPWriteTravelNoteViewController.h"
+#import "Downloader.h"
+#import <SafariServices/SafariServices.h>
+#import "UIButton+WebCache.h"
+#import "JKImagePickerController.h"
+#import "FileUtility.h"
+#import "WJPPhotoBrowseViewController.h"
+
+#import "WJPTemplateDetailModel.h"
+#import "WJPTravelNoteDetailControllerViewController.h"
+
+//#import <objc/runtime.h>
+
+#import "UserInfoModel.h"
+
+// 当日工作
+#import "WJPCheckDetailDocViewController.h"
+#import "InfomationLearningCell.h"
+#import "WJPLinkTaskCell.h"
+#import "BBSViewController.h"
+#import "WJPTaskModel.h"
+
+@interface WJPWriteTravelNoteViewController ()<UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate, UIPickerViewDelegate,UIPickerViewDataSource, JKImagePickerControllerDelegate, UIAlertViewDelegate>
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *photosViewConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *photosViewWidthConstraint;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *myScrollView;
+@property (weak, nonatomic) IBOutlet UIView *photosView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+
+@property (weak, nonatomic) IBOutlet UITextView *contentTextView;
+@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
+@property (weak, nonatomic) IBOutlet UIView *thingTypeView;
+@property (weak, nonatomic) IBOutlet UILabel *thingTypeLabel;
+
+@property (nonatomic, strong) WJPTemplateDetailModel *dataModel;
+@property (nonatomic, copy) NSDictionary *allTags;
+
+@property (nonatomic, assign) CGFloat scrollViewContentHeight;
+@property (nonatomic, assign) NSInteger typeIndex;
+// 图库选中的图片
+@property (nonatomic, copy) NSMutableArray* assetsArray;
+
+@property (nonatomic, assign) BOOL notNeedAlertShow;
+@end
+
+@implementation WJPWriteTravelNoteViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    self.navigationItem.title = @"写游记";
+    _myScrollView.backgroundColor = [UIColor customBackgroundColor];
+    
+    //保存
+    UIBarButtonItem *itemSaveBtn = [[UIBarButtonItem alloc] initWithTitle:@"发布" style:UIBarButtonItemStylePlain target:self action:@selector(publicTravelNote)];
+    self.navigationItem.rightBarButtonItem = itemSaveBtn;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(selectThingType:)];
+    [_thingTypeView addGestureRecognizer:tap];
+    
+    _myScrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+//    UIScrollViewKeyboardDismissModeInteractive,
+}
+
+#pragma mark -- 加载数据
+
+- (void)loadTemplateTypesFromServer
+{
+    Downloader *downloader = [[Downloader alloc] init];
+    [downloader POST:AllTagShow param:nil wating:^{
+        
+    } fail:^{
+        
+    } success:^(NSDictionary *originData) {
+        NSMutableDictionary *tempDict = [NSMutableDictionary new];
+        NSArray *dicts = originData[@"tagList"];
+        for (NSDictionary *dict in dicts) {
+            [tempDict setValue:dict[@"tagName"] forKey:dict[@"tagId"]];
+        }
+        _allTags = tempDict;
+    } refresh:YES];
+}
+
+// 更新缓存数据
+- (void)updateCache
+{
+    NSString *cardId = [UserInfoModel sharedUserInfo].cardId;
+    NSString *cachePath = [NSString stringWithFormat:@"TemplateDetailCache%@_%@_%@", cardId, _templateId, _incidentId];
+    
+    _dataModel.title = _titleTextField.text;
+    if (_contentTextView.text == nil || _contentTextView.text.length <= 0 || [_contentTextView.text isEqualToString:@"写点什么吧！"]) {
+        _dataModel.content = @"";
+    } else {
+        _dataModel.content = _contentTextView.text;
+    }
+    if (_thingTypeLabel.text == nil || _thingTypeLabel.text.length <= 0 || [_thingTypeLabel.text isEqualToString:@"请选择事件类型"]) {
+        _dataModel.tagName = @"";
+    } else {
+        _dataModel.tagName = _thingTypeLabel.text;
+    }
+    
+    NSData *encodedObject = [NSKeyedArchiver archivedDataWithRootObject:_dataModel];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:encodedObject forKey:cachePath];
+}
+
+- (void)loadChangedTemplateDetailDataFromCache
+{
+    NSString *cardId = [UserInfoModel sharedUserInfo].cardId;
+    NSString *cachePath = [NSString stringWithFormat:@"TemplateDetailCache%@_%@_%@", cardId, _templateId, _incidentId];
+    
+    NSData *encodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:cachePath];
+    
+    if (encodedObject == nil) {
+        _dataModel = [[WJPTemplateDetailModel alloc] init];
+    } else {
+        _dataModel = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];
+    }
+    if (![_dataModel.title isEqualToString:_titleString] && _titleString.length > 0) {
+        _dataModel.title = _titleString;
+    }
+    if (![_dataModel.tagName isEqualToString:_tagName] && _tagName.length > 0) {
+        _dataModel.tagName = _tagName;
+    }
+
+    [self updateViewWithInit:NO];
+}
+
+// 发布游记   上传到服务器
+- (void)publicTravelNote
+{
+    if ([_contentTextView isFirstResponder]) {
+        [_contentTextView resignFirstResponder];
+    } else if ([_titleTextField isFirstResponder]) {
+        [_titleTextField resignFirstResponder];
+    }
+    
+    if (![self checkSubmitData]) {
+        return;
+    };
+    
+    [self showHud];
+    [self.navigationItem.rightBarButtonItem setEnabled:NO];
+    NSDictionary *param = [self getSubmitParam];
+
+    Downloader *downloader = [[Downloader alloc] init];
+    [downloader uploadMultiPartFileWithOption:param withURLString:ParticularsSubmit fileName:@"imageId" filePaths:_dataModel.imageArray downloadSuccess:^(id responseObject) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHud];
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+            [self showTips:@"发布成功！"];
+            if (_generalizeId.length > 0 || _templateId.length <= 0 || _templateId == nil) {
+                _notNeedAlertShow = YES;
+                NSString *cardId = [UserInfoModel sharedUserInfo].cardId;
+                NSString *cachePath = [NSString stringWithFormat:@"TemplateDetailCache%@_%@_%@", cardId, _templateId, _incidentId];
+                [[NSUserDefaults standardUserDefaults] removeObjectForKey:cachePath];
+            }
+            
+            [self jumpToTravelDetailWithParam:responseObject];
+        });
+    } downloadFailure:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHud];
+            [self.navigationItem.rightBarButtonItem setEnabled:YES];
+            [self showTips:NetWorkTips];
+        });
+    } progress:^(float progress) {
+        
+    }];
+}
+
+- (BOOL)checkSubmitData
+{
+    BOOL bRet = NO;
+    do {
+        if ((_contentTextView.text.length <= 0 || [_contentTextView.text isEqualToString:@"写点什么吧！"]) && _dataModel.imageArray.count <= 0) {
+            [self showTips:@"请填写游记内容"];
+            break;
+        }
+        if (_titleTextField.text.length <= 0 || [_titleTextField.text isEqualToString:@"标题"]) {
+            [self showTips:@"请填写游记标题"];
+            break;
+        }
+        if (_thingTypeLabel.text.length <= 0 || [_thingTypeLabel.text isEqualToString:@"请选择事件类型"]) {
+            [self showTips:@"请选择事件类型"];
+            break;
+        }
+        bRet = YES;
+    } while (0);
+    return bRet;
+}
+
+- (NSDictionary *)getSubmitParam
+{
+    UserInfoModel *model = [UserInfoModel sharedUserInfo];
+    NSMutableDictionary *tempParam = [NSMutableDictionary new];
+    [tempParam setValue:model.cardId forKey:@"cardId"];
+    [tempParam setValue:_incidentId forKey:@"incidentId"];
+    [tempParam setValue:model.groupId forKey:@"groupId"];
+    [tempParam setValue:_dataModel.title forKey:@"title"];
+    [tempParam setValue:_dataModel.content forKey:@"content"];
+
+    for (NSInteger i = 0; i < _allTags.allValues.count; ++i) {
+        if ([_allTags.allValues[i] isEqualToString:_thingTypeLabel.text]) {
+            [tempParam setValue:_allTags.allKeys[i] forKey:@"tagId"];
+            break;
+        }
+    }
+    [tempParam setValue:model.stuName forKey:@"initiatorName"];
+    [tempParam setValue:@"学生" forKey:@"initiatorRole"];
+    
+    [tempParam setValue:@"" forKey:@"coverId"];
+    
+    [tempParam setValue:@"" forKey:@"accessoryId"];
+    _generalizeId = _generalizeId == nil ? @"" : _generalizeId;
+    [tempParam setValue:_generalizeId forKey:@"generalizeId"];
+    
+    return [tempParam copy];
+}
+
+#pragma mark -- 创建视图
+-(void)creatPikerViewWithData:(NSArray *)itemArr
+{
+    [self removePickerAndButton];
+    
+    UIPickerView * picker = [self.view.window viewWithTag:PickerViewTag];
+    if (picker != nil) {
+        return;
+    }
+    self.myScrollView.scrollEnabled = NO;
+    picker = [[UIPickerView alloc]initWithFrame:CGRectMake(0, ScreenHeight-225, ScreenWidth, 180)];
+    [picker setBackgroundColor:[UIColor colorWithHex:0xF7F3EC]];
+    picker.dataSource = self;
+    picker.delegate = self;
+    [picker setTag:PickerViewTag];
+    
+    //空号分割字符串
+    //    UILabel * label = [tapView viewWithTag:210];
+    UILabel * label = _thingTypeLabel;
+    NSString *strCon  = label.text;
+    if ([strCon isEqualToString:@""] || [strCon isEqualToString:@"请选择事件类型"] ) {
+        self.typeIndex = 0;
+        label.textColor = [UIColor colorWithHex:0xcccccc];
+    } else {
+        label.textColor = [UIColor themeColor];
+        for (NSInteger i = 0; i < itemArr.count; i++) {
+            NSString * strObj = itemArr[i];
+            if ([strObj isEqualToString:strCon]) {
+                self.typeIndex = i;
+            }
+        }
+    }
+ 
+    //设置选中行
+    [picker selectRow: self.typeIndex inComponent: 0 animated: NO];
+    [picker reloadAllComponents];
+    
+    //    [self.view.window addSubview:picker];
+    [self createSaveBtn];
+    [self.view.window insertSubview:picker atIndex:10];
+}
+
+//创建按钮和遮罩
+-(void)createSaveBtn
+{
+    UIView * mastView = [self.navigationController.view viewWithTag:WJPMast_View_Tag];
+    if (mastView) {
+        return;
+    }
+    mastView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+    mastView.tag = WJPMast_View_Tag;
+    mastView.backgroundColor = [UIColor blackColor];
+    mastView.alpha = 0.5;
+    [self.view.window insertSubview:mastView atIndex:9];
+    
+    //添加取消键盘手势
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cancelTap:)];
+    [mastView addGestureRecognizer:tap];
+    
+    //保存按钮
+    UIButton * saveBtn = [self.view.window viewWithTag:WJPSave_Button_Tag];
+    if (saveBtn) {
+        return;
+    }
+    saveBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, ScreenHeight -45, ScreenWidth, 45)];
+    [saveBtn setTitle:@"保 存" forState:UIControlStateNormal];
+    [saveBtn setTag:WJPSave_Button_Tag];
+    [saveBtn setBackgroundColor:[UIColor colorWithHex:0x2DBE60]];
+    [saveBtn addTarget:self action:@selector(saveButton:) forControlEvents:UIControlEventTouchUpInside ];
+    [self.view.window
+     insertSubview:saveBtn atIndex:11];
+}
+//删除当前的PickerView
+-(void)removePickerAndButton
+{
+    UIPickerView * picker = [self.view.window viewWithTag:PickerViewTag];
+    if (picker != nil) {
+        [picker removeFromSuperview];
+        picker = nil;
+    }
+    
+    UIButton * saveBtn = [self.view.window viewWithTag:WJPSave_Button_Tag];
+    if (saveBtn != nil) {
+        [saveBtn removeFromSuperview];
+        saveBtn = nil;
+        self.myScrollView.scrollEnabled = YES;
+        //        self.curPickerTag = 1;
+    }
+    UIView * mastView = [self.view.window viewWithTag:WJPMast_View_Tag];
+    if (mastView != nil) {
+        [mastView removeFromSuperview];
+        mastView = nil;
+    }
+    [UIView animateWithDuration:0.25 animations:^{
+        CGRect frame = self.myScrollView.frame;
+        frame.origin.y = 64;
+        self.myScrollView.superview.frame = frame;
+    }];
+}
+// 刷新视图
+- (void)updateViewWithInit:(BOOL)isInit
+{
+    _photosViewWidthConstraint.constant = ScreenWidth;
+    _scrollViewContentHeight = 0;
+    if (isInit) {
+        CGFloat imageButtonWidth = (ScreenWidth - 16 - 16 - 8 - 8) / 3.0;
+        CGFloat imagesViewHeight = imageButtonWidth + 16 + 20;
+        _photosViewConstraint.constant = imagesViewHeight;
+        _scrollViewContentHeight += imagesViewHeight;
+        
+        for (NSInteger i = 0; i < 9; ++i) {
+            UIButton *imageButton = [_photosView viewWithTag:(ImageButtonTag+i)];
+            imageButton.hidden = i > 0 ? YES : NO;
+            if (i == 0) {
+                UIImage *image = [UIImage imageNamed:@"ic_writetravelnote_addphoto"];
+                
+                [imageButton setImage:image forState:UIControlStateNormal];
+            }
+        }
+
+        _scrollViewContentHeight += (194+100);
+        if (_scrollViewContentHeight <= ScreenHeight-64) {
+            _scrollViewContentHeight = ScreenHeight-63;
+        }
+        _myScrollView.contentSize = CGSizeMake(ScreenWidth, _scrollViewContentHeight);
+        
+        return;
+    }
+    
+    _scrollViewContentHeight += (194+100);
+    
+    CGFloat imageButtonWidth = (ScreenWidth - 16 - 16 - 8 - 8) / 3.0;
+    
+    NSInteger imageRow = (_dataModel.imageArray.count / 3 + 1);
+    imageRow = imageRow > 3 ? 3 : imageRow;
+    CGFloat imagesViewHeight = imageRow * (imageButtonWidth + 8) + 16 + (20-8);
+    _photosViewConstraint.constant = imagesViewHeight;
+    _scrollViewContentHeight += imagesViewHeight;
+    
+    for (NSInteger i = 0; i < 9; ++i) {
+        UIButton *imageButton = [_photosView viewWithTag:(ImageButtonTag+i)];
+        if (i < _dataModel.imageArray.count) {
+            imageButton.hidden = NO;
+            id value = _dataModel.imageArray[i];
+            // 本地图片
+            if ([value isKindOfClass:[NSString class]]) {
+                NSData *data = [[NSData alloc] initWithContentsOfFile:value];
+                if (data == nil) {
+                    NSMutableArray *tempArray = [_dataModel.imageArray mutableCopy];
+                    [tempArray removeObjectAtIndex:i];
+                    _dataModel.imageArray = [tempArray copy];
+                    i -= 1;
+                    continue;
+                }
+            
+                UIImage *image = [UIImage imageWithData:data];
+//                NSNumber *orientation = objc_getAssociatedObject(value, "ImageOrientation");
+//                image = [UIImage imageWithCGImage:image.CGImage scale:1 orientation:[orientation integerValue]];
+//                [imageButton setBackgroundImage:image forState:UIControlStateNormal];
+                [imageButton setImage:image forState:UIControlStateNormal];
+            }
+            
+            imageButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+            imageButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+            imageButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+            
+        } else if (i == _dataModel.imageArray.count) {
+            imageButton.hidden = NO;
+            //            NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"ic_writetravelnote_addphoto" ofType:nil];
+            //            UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+            UIImage *image = [UIImage imageNamed:@"ic_writetravelnote_addphoto"];
+            [imageButton setImage:image forState:UIControlStateNormal];
+        } else {
+            imageButton.hidden = YES;
+        }
+    }
+    
+    if (_dataModel.content.length > 0 && ![_dataModel.content isEqualToString:@"写点什么吧！"]) {
+        _contentTextView.text = _dataModel.content;
+        _contentTextView.textColor = [UIColor themeColor];
+    }
+    if (_dataModel.title.length > 0 && ![_dataModel.title isEqualToString:@"标题"]) {
+        _titleTextField.text = _dataModel.title;
+    }
+    if (_dataModel.tagName.length > 0 && ![_dataModel.tagName isEqualToString:@"请选择事件类型"]) {
+        _thingTypeLabel.text = _dataModel.tagName;
+        _thingTypeLabel.textColor = [UIColor themeColor];
+    }
+    
+    if (_scrollViewContentHeight <= ScreenHeight-64) {
+        _scrollViewContentHeight = ScreenHeight-63;
+    }
+    _myScrollView.contentSize = CGSizeMake(ScreenWidth, _scrollViewContentHeight);
+}
+#pragma mark -- 失去焦点
+-(void)cancelTap : (UITapGestureRecognizer *)tap
+{
+    [self removePickerAndButton];
+}
+
+-(void)saveButton:(UIButton *)sender
+{
+    UIButton* control = (UIButton*)sender;
+    [control setEnabled:NO];
+    UIPickerView * picker = [self.view.window viewWithTag:PickerViewTag];
+    if (picker != nil) {
+        NSArray *types = _allTags.allValues;
+        _thingTypeLabel.text = types[self.typeIndex];
+        _thingTypeLabel.textColor = [UIColor themeColor];
+        _dataModel.tagName = _thingTypeLabel.text;
+    }
+    [self removePickerAndButton];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    if ([_contentTextView isFirstResponder]) {
+        [_contentTextView resignFirstResponder];
+    } else if ([_titleTextField isFirstResponder]) {
+        [_titleTextField resignFirstResponder];
+    }
+}
+
+#pragma mark -- UIPicker View Delegate
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSArray *allTypes = _allTags.allValues;
+    _thingTypeLabel.text = allTypes[row];
+    self.typeIndex = row;
+}
+
+#pragma mark -- UIPicker View DataSource
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return _allTags.allKeys.count;
+}
+
+- (CGFloat)pickerView:(UIPickerView *)pickerView rowHeightForComponent:(NSInteger)component
+{
+    return 32;
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    NSArray *allTypes = _allTags.allValues;
+    return allTypes[row];
+}
+
+#pragma mark -- UIText View Delegate
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    if (![textView.text isEqualToString:@"写点什么吧！"]) {
+        return YES;
+    }
+    textView.text = @"";
+    textView.textColor = [UIColor themeColor];
+    return YES;
+}
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    if (textView.text.length <= 0 || [textView.text isEqualToString:@"写点什么吧！"]) {
+        textView.text = @"写点什么吧！";
+        textView.textColor = [UIColor colorWithHex:0xcccccc];
+        _dataModel.content = @"";
+    } else {
+        _dataModel.content = textView.text;
+    }
+    return YES;
+}
+
+#pragma mark -- UIText Field Delegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    _dataModel.title = textField.text;
+    return YES;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (_generalizeId.length > 0) {
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    _dataModel.title = textField.text;
+    return YES;
+}
+
+#pragma mark -- 跳转逻辑  and   点击事件
+- (IBAction)imageClicked:(UIButton *)sender {
+    if ([_contentTextView isFirstResponder]) {
+        [_contentTextView resignFirstResponder];
+    } else if ([_titleTextField isFirstResponder]) {
+        [_titleTextField resignFirstResponder];
+    }
+    if (sender.tag - ImageButtonTag >= _dataModel.imageArray.count) {
+        [self photoAlbum];
+    } else {
+        WJPPhotoBrowseViewController *photoBrowseVC = [[WJPPhotoBrowseViewController alloc] init];
+        photoBrowseVC.imageArray = _dataModel.imageArray;
+        photoBrowseVC.currentIndex = sender.tag - ImageButtonTag;
+        photoBrowseVC.isFromSuperViewController = YES;
+        [photoBrowseVC setDeleteBlock:^(NSInteger index) {
+            NSMutableArray *tempArray = [_dataModel.imageArray mutableCopy];
+            id obj = [tempArray objectAtIndex:index];
+            [tempArray removeObjectAtIndex:index];
+            _dataModel.imageArray = [tempArray copy];
+            if ([obj isKindOfClass:[NSString class]]) {
+                [FileUtility deleteFile:obj];
+            }
+        }];
+        
+        NSMutableArray *tempArray = [NSMutableArray new];
+        for (NSInteger i = 0; i < _dataModel.imageArray.count; ++i) {
+            UIButton *button = [_photosView viewWithTag:i+ImageButtonTag];
+            if (button.currentBackgroundImage == nil) {
+                [tempArray addObject:[NSNull null]];
+            } else {
+                [tempArray addObject:button.currentBackgroundImage];
+            }
+        }
+        photoBrowseVC.placeholdImageArray = [tempArray copy];
+        
+        [self.navigationController pushViewController:photoBrowseVC animated:YES];
+    }
+}
+
+- (void)selectThingType:(UIGestureRecognizer *)tap
+{
+    if (_generalizeId.length > 0) {
+        return;
+    }
+    if ([_titleTextField isFirstResponder]) {
+        [_titleTextField resignFirstResponder];
+    } else if ([_contentTextView isFirstResponder]) {
+        [_contentTextView resignFirstResponder];
+    }
+    
+//    [self creatPikerViewWithData:_allTags.allValues];
+    [UIView animateWithDuration:0.25 animations:^{
+        CGRect frame = self.myScrollView.frame;
+        frame.origin.y = -225+64;
+        self.myScrollView.superview.frame = frame;
+    }];
+}
+
+- (void)back:(UIBarButtonItem *)btn
+{
+    if ([_contentTextView isFirstResponder]) {
+        [_contentTextView resignFirstResponder];
+    } else if ([_titleTextField isFirstResponder]) {
+        [_titleTextField resignFirstResponder];
+    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (_notNeedAlertShow == NO) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"是否保存已编辑的信息" delegate:self cancelButtonTitle:@"不保存" otherButtonTitles:@"保存", nil];
+            [alertView show];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+            _notNeedAlertShow = NO;
+        }
+    });
+}
+
+- (void)jumpToTravelDetailWithParam:(id)param
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.needScroll setString:@"1"];
+        [self.navigationController popViewControllerAnimated:YES];
+//        if ([param isKindOfClass:[NSDictionary class]]) {
+//            WJPTravelNoteDetailControllerViewController *tdVC = [[WJPTravelNoteDetailControllerViewController alloc] init];
+//            tdVC.templateId = param[@"templateId"];
+//            tdVC.introId = _incidentId;
+//            tdVC.jp_scrollToLastCell = YES;
+//            tdVC.travelArray = _travelArray;
+//            tdVC.currentIndex = _currentIndex;
+//            [self.navigationController pushViewController:tdVC animated:YES];
+//        }
+    });
+}
+
+#pragma mark -- UIAlert View Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        
+    } else {
+        [self updateCache];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark -- JKImagePickerControllerDelegate
+// 进入相册
+- (void)photoAlbum {
+    JKImagePickerController *imagePickerController = [[JKImagePickerController alloc] init];
+    imagePickerController.delegate = self;
+    imagePickerController.filterType = JKImagePickerControllerFilterTypePhotos;
+    imagePickerController.showsCancelButton = YES;
+    imagePickerController.minimumNumberOfSelection = 1;
+    imagePickerController.maximumNumberOfSelection = (9 - _dataModel.imageArray.count);
+    imagePickerController.selectedAssetArray = self.assetsArray;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:imagePickerController];
+    [self presentViewController:navigationController animated:YES completion:NULL];
+}
+// 点击下一步(右下角)
+- (void)imagePickerController:(JKImagePickerController *)imagePicker didSelectAssets:(NSArray *)assets isSource:(BOOL)source
+{
+    [self showHud];
+    [assets enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        JKAssets *asset = obj;
+        ALAssetsLibrary *lib = [[ALAssetsLibrary alloc] init];
+        [lib assetForURL:asset.assetPropertyURL resultBlock:^(ALAsset *asset) {
+//            ALAssetRepresentation* representation = [asset defaultRepresentation];
+//            ALAssetOrientation ooo = [representation orientation];
+            UIImage *image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullScreenImage]];
+//            image = [UIImage imageWithCGImage:image.CGImage scale:1 orientation:[@(ooo) integerValue]];
+            NSString *cardId = [UserInfoModel sharedUserInfo].cardId;
+            NSString *cachePath = [HomePath stringByAppendingPathComponent:RootPath];
+            NSString *lastPath = [NSString stringWithFormat:@"WriteTravelNoteImageCache%@_%@_%lu", cardId, _templateId, (unsigned long)(_dataModel.imageArray.count)];
+            cachePath = [cachePath stringByAppendingPathComponent:lastPath];
+            
+//            objc_setAssociatedObject(cachePath, "ImageOrientation", @(ooo), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            
+            [self compressImageWithImage:image WriteTo:cachePath Last:(idx >= assets.count-1)];
+        } failureBlock:^(NSError *error) {
+            
+        }];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    NSLog(@"您取消了选择图片");
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+// 压缩、保存图片
+- (void)compressImageWithImage:(UIImage *)image WriteTo:(NSString *)filePath Last:(BOOL)isLast
+{
+    NSData *data = UIImageJPEGRepresentation(image, 1);
+    CGFloat imagerate = 0.5f;
+    if (data.length < 200 * 1024) {
+        imagerate = 1.0f;
+    } else if (data.length < 500 * 1024) {
+        imagerate = 0.8f;//可以  600k -> 200k
+    } else if (data.length < 1000 * 1024) {
+        imagerate = 0.6f;//可以  600k -> 200k
+    } else if (data.length < 3000 * 1024) {
+        imagerate = 0.35f;
+    } else if (data.length < 5000 * 1024) {
+        imagerate = 0.25f;// 4M -> 240k
+    } else if (data.length < 10000 * 1024) {
+        imagerate = 0.15f;// 5-6M -> 300k+
+    } else {
+        imagerate = 0.01f;// 10M -> 1M
+    }
+
+    NSData *rateData = UIImageJPEGRepresentation(image, imagerate);
+    [FileUtility writeFileData:rateData filePath:filePath];
+    NSMutableArray *tempFilePaths = [_dataModel.imageArray mutableCopy];
+    if (tempFilePaths == nil) {
+        tempFilePaths = [NSMutableArray new];
+    }
+    [tempFilePaths addObject:filePath];
+    _dataModel.imageArray = [tempFilePaths copy];
+    
+    if (isLast) {
+        [self hideHud];
+        [self dismissViewControllerAnimated:YES completion:^{
+        }];
+    }
+}
+
+#pragma mark -- 键盘弹出/消失事件
+- (void)jp_KeyBoardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    NSNumber *bValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDur = [bValue floatValue];
+    
+    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    int kbheight = keyboardRect.size.height;
+    
+    CGFloat offsetHeight = 0;
+    if ([_titleTextField isFirstResponder]) {
+        offsetHeight = kbheight - 90 - 64;
+    } else if ([_contentTextView isFirstResponder]) {
+        offsetHeight = _myScrollView.contentOffset.y;
+        
+        CGFloat textViewHeightForScreen = ScreenHeight - _photosViewConstraint.constant - 15 - 100 - 5;
+        
+        offsetHeight = kbheight - textViewHeightForScreen - offsetHeight;
+    }
+    
+//    offsetHeight = offsetHeight < -64 ? -64 : offsetHeight;
+    offsetHeight = offsetHeight < 0 ? 0 : offsetHeight;
+    [UIView animateWithDuration:animationDur animations:^{
+        CGRect frame = self.myScrollView.frame;
+        frame.origin.y = -offsetHeight;
+        self.myScrollView.superview.frame = frame;
+    }];
+}
+
+- (void)jp_KeyBoardWillHide:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    id bValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDur = [bValue floatValue];
+    [UIView animateWithDuration:animationDur animations:^{
+        CGRect frame = self.myScrollView.frame;
+//        frame.origin.y = 64;
+        frame.origin.y = 0;
+        self.myScrollView.superview.frame = frame;
+    }];
+}
+
+#pragma mark -- LifeCircle
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self updateViewWithInit:_isFromSuperViewController];
+    
+    [self loadTemplateTypesFromServer];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSNotificationCenter *notifiCenter = [NSNotificationCenter defaultCenter];
+    [notifiCenter addObserver:self selector:@selector(jp_KeyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [notifiCenter addObserver:self selector:@selector(jp_KeyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    if (_isFromSuperViewController) {
+        [self loadChangedTemplateDetailDataFromCache];
+    } else {
+
+    }
+    _isFromSuperViewController = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    NSNotificationCenter *notifiCenter = [NSNotificationCenter defaultCenter];
+    [notifiCenter removeObserver:self];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

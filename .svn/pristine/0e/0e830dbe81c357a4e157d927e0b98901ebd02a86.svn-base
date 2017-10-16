@@ -1,0 +1,18 @@
+//
+//  QuestionCell.h
+//  StudyTour
+//
+//  Created by lqq on 16/6/17.
+//  Copyright © 2016年 lqq. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+@class QuestionCellFrame;
+
+@interface QuestionCell : UITableViewCell
+
+
+@property(nonatomic,strong) QuestionCellFrame *cellFrame;
+
+
+@end

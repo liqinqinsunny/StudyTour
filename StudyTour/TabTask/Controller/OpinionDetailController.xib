@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OpinionDetailController">
+            <connections>
+                <outlet property="myTextView" destination="GSd-F3-Szu" id="g0F-yk-Lo4"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ve2-f4-vCx">
+                    <rect key="frame" x="20" y="74" width="280" height="203"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="吃的如何？" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KFq-wy-hS0">
+                            <rect key="frame" x="8" y="15" width="87" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="87" id="byW-NS-R1Y"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XbR-Db-cHb">
+                            <rect key="frame" x="115" y="10" width="74" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-5" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="满意" image="heart-plus-copy-2.png" backgroundImage="Rounded-Rectangle-2.png">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="heart-plus-green.png">
+                                <color key="titleColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="satisfied:" destination="-1" eventType="touchUpInside" id="iAb-84-5Ow"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K7i-Sp-LwL">
+                            <rect key="frame" x="199" y="10" width="73" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-5" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="不满意" image="heart-minus-copy-2.png" backgroundImage="Rounded-Rectangle-2.png">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="heart-minus-green.png">
+                                <color key="titleColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="satisfied:" destination="-1" eventType="touchUpInside" id="EkE-KO-UF8"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xd7-2J-vuC">
+                            <rect key="frame" x="8" y="50" width="264" height="1"/>
+                            <color key="backgroundColor" red="0.50196078431372548" green="0.84705882352941175" blue="0.70588235294117641" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="YuW-BJ-AMI"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="行程如何？" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sjr-I7-CRo">
+                            <rect key="frame" x="8" y="65" width="87" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="87" id="7hN-WE-rbk"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" tag="21" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SuY-MD-DXD">
+                            <rect key="frame" x="199" y="61" width="73" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-5" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="不满意" image="heart-minus-copy-2.png" backgroundImage="Rounded-Rectangle-2.png">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="heart-minus-green.png">
+                                <color key="titleColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="satisfied:" destination="-1" eventType="touchUpInside" id="3lq-ls-pJU"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="20" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhP-ye-Xin">
+                            <rect key="frame" x="115" y="61" width="74" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-5" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="满意" image="heart-plus-copy-2.png" backgroundImage="Rounded-Rectangle-2.png">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="heart-plus-green.png">
+                                <color key="titleColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="satisfied:" destination="-1" eventType="touchUpInside" id="1aF-4S-TSQ"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UDJ-mb-k0d">
+                            <rect key="frame" x="8" y="101" width="264" height="1"/>
+                            <color key="backgroundColor" red="0.50196078431372548" green="0.84705882352941175" blue="0.70588235294117641" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="cA4-hN-oW5"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="领队如何？" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X7Q-K5-ud0">
+                            <rect key="frame" x="8" y="167" width="87" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="87" id="ICW-z4-5xd"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" tag="41" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRe-v4-Wyg">
+                            <rect key="frame" x="199" y="163" width="73" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-5" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="不满意" image="heart-minus-copy-2.png" backgroundImage="Rounded-Rectangle-2.png">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="heart-minus-green.png">
+                                <color key="titleColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="satisfied:" destination="-1" eventType="touchUpInside" id="If1-Fc-BdQ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="40" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v1G-OJ-O26">
+                            <rect key="frame" x="115" y="163" width="74" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-5" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="满意" image="heart-plus-copy-2.png" backgroundImage="Rounded-Rectangle-2.png">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="heart-plus-green.png">
+                                <color key="titleColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="satisfied:" destination="-1" eventType="touchUpInside" id="eOp-TQ-T1r"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UvC-2n-izl">
+                            <rect key="frame" x="8" y="203" width="264" height="1"/>
+                            <color key="backgroundColor" red="0.50196078431372548" green="0.84705882352941175" blue="0.70588235294117641" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="tFe-w0-uRh"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="住的如何？" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZF9-su-OTe">
+                            <rect key="frame" x="8" y="116" width="87" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="87" id="CEg-K1-V7x"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" tag="31" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uP8-xB-9de">
+                            <rect key="frame" x="199" y="112" width="73" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-5" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="不满意" image="heart-minus-copy-2.png" backgroundImage="Rounded-Rectangle-2.png">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="heart-minus-green.png">
+                                <color key="titleColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="satisfied:" destination="-1" eventType="touchUpInside" id="Jq6-OY-79r"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="30" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cuJ-7o-UZd">
+                            <rect key="frame" x="115" y="112" width="74" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="-5" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="满意" image="heart-plus-copy-2.png" backgroundImage="Rounded-Rectangle-2.png">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="heart-plus-green.png">
+                                <color key="titleColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="satisfied:" destination="-1" eventType="touchUpInside" id="Tmc-rz-rY5"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nqw-SL-cX7">
+                            <rect key="frame" x="8" y="152" width="264" height="1"/>
+                            <color key="backgroundColor" red="0.50196078431372548" green="0.84705882352941175" blue="0.70588235294117641" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="pgg-2K-evo"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="hRe-v4-Wyg" firstAttribute="leading" secondItem="v1G-OJ-O26" secondAttribute="trailing" constant="10" id="06v-QK-VMs"/>
+                        <constraint firstAttribute="trailing" secondItem="UvC-2n-izl" secondAttribute="trailing" constant="8" id="0MF-kO-VRv"/>
+                        <constraint firstItem="Sjr-I7-CRo" firstAttribute="leading" secondItem="ve2-f4-vCx" secondAttribute="leading" constant="8" id="2tQ-Zp-CFK"/>
+                        <constraint firstItem="K7i-Sp-LwL" firstAttribute="leading" secondItem="XbR-Db-cHb" secondAttribute="trailing" constant="10" id="2va-T0-AT4"/>
+                        <constraint firstItem="Nqw-SL-cX7" firstAttribute="leading" secondItem="ve2-f4-vCx" secondAttribute="leading" constant="8" id="3Dy-UN-sRZ"/>
+                        <constraint firstItem="UvC-2n-izl" firstAttribute="top" secondItem="v1G-OJ-O26" secondAttribute="bottom" constant="10" id="4mC-zz-Pbj"/>
+                        <constraint firstItem="X7Q-K5-ud0" firstAttribute="leading" secondItem="ve2-f4-vCx" secondAttribute="leading" constant="8" id="5KE-Xh-f9g"/>
+                        <constraint firstItem="v1G-OJ-O26" firstAttribute="leading" secondItem="X7Q-K5-ud0" secondAttribute="trailing" constant="20" id="6AB-6K-eiL"/>
+                        <constraint firstItem="v1G-OJ-O26" firstAttribute="centerY" secondItem="X7Q-K5-ud0" secondAttribute="centerY" id="APQ-OG-DYi"/>
+                        <constraint firstAttribute="trailing" secondItem="SuY-MD-DXD" secondAttribute="trailing" constant="8" id="CXB-Dl-Bgu"/>
+                        <constraint firstItem="XbR-Db-cHb" firstAttribute="centerY" secondItem="KFq-wy-hS0" secondAttribute="centerY" id="Dfq-0z-V1Y"/>
+                        <constraint firstItem="hRe-v4-Wyg" firstAttribute="centerY" secondItem="X7Q-K5-ud0" secondAttribute="centerY" id="H9r-lv-fus"/>
+                        <constraint firstItem="Xd7-2J-vuC" firstAttribute="leading" secondItem="ve2-f4-vCx" secondAttribute="leading" constant="8" id="IKo-Jw-0kj"/>
+                        <constraint firstItem="Xd7-2J-vuC" firstAttribute="top" secondItem="K7i-Sp-LwL" secondAttribute="bottom" constant="10" id="Iea-6l-fko"/>
+                        <constraint firstItem="XbR-Db-cHb" firstAttribute="leading" secondItem="KFq-wy-hS0" secondAttribute="trailing" constant="20" id="IsG-kS-McP"/>
+                        <constraint firstItem="SuY-MD-DXD" firstAttribute="centerY" secondItem="Sjr-I7-CRo" secondAttribute="centerY" id="JGj-7E-vSp"/>
+                        <constraint firstItem="K7i-Sp-LwL" firstAttribute="centerY" secondItem="XbR-Db-cHb" secondAttribute="centerY" id="NHY-gd-ZlT"/>
+                        <constraint firstItem="K7i-Sp-LwL" firstAttribute="top" secondItem="ve2-f4-vCx" secondAttribute="top" constant="10" id="Q1o-Ov-oV9"/>
+                        <constraint firstItem="vhP-ye-Xin" firstAttribute="leading" secondItem="Sjr-I7-CRo" secondAttribute="trailing" constant="20" id="QJY-NC-6Ts"/>
+                        <constraint firstItem="cuJ-7o-UZd" firstAttribute="leading" secondItem="ZF9-su-OTe" secondAttribute="trailing" constant="20" id="QhU-ka-oGL"/>
+                        <constraint firstItem="uP8-xB-9de" firstAttribute="width" secondItem="cuJ-7o-UZd" secondAttribute="width" id="R3h-jH-TDm"/>
+                        <constraint firstAttribute="height" constant="203" id="R6f-Wy-h9I"/>
+                        <constraint firstItem="K7i-Sp-LwL" firstAttribute="width" secondItem="XbR-Db-cHb" secondAttribute="width" id="RQL-9F-qXF"/>
+                        <constraint firstItem="ZF9-su-OTe" firstAttribute="leading" secondItem="ve2-f4-vCx" secondAttribute="leading" constant="8" id="VoS-Jm-PlX"/>
+                        <constraint firstItem="Nqw-SL-cX7" firstAttribute="top" secondItem="cuJ-7o-UZd" secondAttribute="bottom" constant="10" id="WiS-DM-NKZ"/>
+                        <constraint firstItem="UvC-2n-izl" firstAttribute="leading" secondItem="ve2-f4-vCx" secondAttribute="leading" constant="8" id="Xpl-jw-w1d"/>
+                        <constraint firstAttribute="trailing" secondItem="K7i-Sp-LwL" secondAttribute="trailing" constant="8" id="ZN3-uf-cPR"/>
+                        <constraint firstAttribute="trailing" secondItem="uP8-xB-9de" secondAttribute="trailing" constant="8" id="ZjJ-4E-47v"/>
+                        <constraint firstAttribute="trailing" secondItem="Xd7-2J-vuC" secondAttribute="trailing" constant="8" id="aNU-it-fQA"/>
+                        <constraint firstItem="UDJ-mb-k0d" firstAttribute="leading" secondItem="ve2-f4-vCx" secondAttribute="leading" constant="8" id="cNB-ow-9KW"/>
+                        <constraint firstItem="uP8-xB-9de" firstAttribute="top" secondItem="UDJ-mb-k0d" secondAttribute="bottom" constant="10" id="ecn-3c-4th"/>
+                        <constraint firstItem="cuJ-7o-UZd" firstAttribute="centerY" secondItem="ZF9-su-OTe" secondAttribute="centerY" id="eyk-Mz-vHs"/>
+                        <constraint firstAttribute="trailing" secondItem="hRe-v4-Wyg" secondAttribute="trailing" constant="8" id="gNe-bH-ABR"/>
+                        <constraint firstItem="SuY-MD-DXD" firstAttribute="leading" secondItem="vhP-ye-Xin" secondAttribute="trailing" constant="10" id="gYL-bt-sSl"/>
+                        <constraint firstItem="uP8-xB-9de" firstAttribute="centerY" secondItem="ZF9-su-OTe" secondAttribute="centerY" id="hLK-oS-gHR"/>
+                        <constraint firstItem="vhP-ye-Xin" firstAttribute="centerY" secondItem="Sjr-I7-CRo" secondAttribute="centerY" id="jPq-Gj-op6"/>
+                        <constraint firstItem="hRe-v4-Wyg" firstAttribute="top" secondItem="Nqw-SL-cX7" secondAttribute="bottom" constant="10" id="kfC-68-zfd"/>
+                        <constraint firstItem="hRe-v4-Wyg" firstAttribute="width" secondItem="v1G-OJ-O26" secondAttribute="width" id="lC9-Uz-E4a"/>
+                        <constraint firstItem="uP8-xB-9de" firstAttribute="leading" secondItem="cuJ-7o-UZd" secondAttribute="trailing" constant="10" id="n3E-f2-EL4"/>
+                        <constraint firstAttribute="trailing" secondItem="Nqw-SL-cX7" secondAttribute="trailing" constant="8" id="n4N-Vf-Y2F"/>
+                        <constraint firstItem="SuY-MD-DXD" firstAttribute="width" secondItem="vhP-ye-Xin" secondAttribute="width" id="qWI-AN-qfG"/>
+                        <constraint firstItem="SuY-MD-DXD" firstAttribute="top" secondItem="Xd7-2J-vuC" secondAttribute="bottom" constant="10" id="snY-0j-b3K"/>
+                        <constraint firstItem="UDJ-mb-k0d" firstAttribute="top" secondItem="vhP-ye-Xin" secondAttribute="bottom" constant="10" id="xDH-bX-YCl"/>
+                        <constraint firstAttribute="trailing" secondItem="UDJ-mb-k0d" secondAttribute="trailing" constant="8" id="xkT-Rc-62m"/>
+                        <constraint firstItem="KFq-wy-hS0" firstAttribute="leading" secondItem="ve2-f4-vCx" secondAttribute="leading" constant="8" id="z8q-iP-grZ"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="综合评价" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HsK-ky-S7O">
+                    <rect key="frame" x="20" y="297" width="280" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="我要提意见：" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="GSd-F3-Szu">
+                    <rect key="frame" x="20" y="320" width="280" height="140"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="GSd-F3-Szu" secondAttribute="height" multiplier="2:1" id="EyR-td-zhU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="TeT-xc-reo"/>
+                    </connections>
+                </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5n-zm-XBh">
+                    <rect key="frame" x="80" y="500" width="160" height="40"/>
+                    <color key="backgroundColor" red="0.0039215686269999999" green="0.69411764710000001" blue="0.41176470590000003" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="160" id="Pl8-br-hTd"/>
+                        <constraint firstAttribute="height" constant="40" id="WQb-0m-UqO"/>
+                    </constraints>
+                    <state key="normal" title="提   交">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="submit:" destination="-1" eventType="touchUpInside" id="Wbd-7k-k2o"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="GSd-F3-Szu" firstAttribute="top" secondItem="HsK-ky-S7O" secondAttribute="bottom" constant="2" id="3mp-bQ-zVB"/>
+                <constraint firstItem="GSd-F3-Szu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="49B-VZ-DrQ"/>
+                <constraint firstAttribute="trailing" secondItem="ve2-f4-vCx" secondAttribute="trailing" constant="20" id="6Da-Y2-nGQ"/>
+                <constraint firstItem="ve2-f4-vCx" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="AKi-RB-4g7"/>
+                <constraint firstItem="HsK-ky-S7O" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="DlK-hz-YB8"/>
+                <constraint firstItem="z5n-zm-XBh" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="H42-d6-2fN"/>
+                <constraint firstItem="z5n-zm-XBh" firstAttribute="top" secondItem="GSd-F3-Szu" secondAttribute="bottom" constant="40" id="I2D-cq-YRO"/>
+                <constraint firstAttribute="trailing" secondItem="HsK-ky-S7O" secondAttribute="trailing" constant="20" id="RjX-GP-XUE"/>
+                <constraint firstItem="HsK-ky-S7O" firstAttribute="top" secondItem="ve2-f4-vCx" secondAttribute="bottom" constant="20" id="kkq-l2-lWY"/>
+                <constraint firstItem="ve2-f4-vCx" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="74" id="oHU-ov-5Ia"/>
+                <constraint firstAttribute="trailing" secondItem="GSd-F3-Szu" secondAttribute="trailing" constant="20" id="tzc-bH-TJl"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Rounded-Rectangle-2.png" width="130" height="30"/>
+        <image name="heart-minus-copy-2.png" width="15" height="15"/>
+        <image name="heart-minus-green.png" width="15" height="15"/>
+        <image name="heart-plus-copy-2.png" width="15" height="15"/>
+        <image name="heart-plus-green.png" width="15" height="15"/>
+    </resources>
+</document>

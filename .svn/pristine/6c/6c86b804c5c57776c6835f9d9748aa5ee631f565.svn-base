@@ -1,0 +1,54 @@
+//
+//  QuestionCell.m
+//  StudyTour
+//
+//  Created by lqq on 16/6/17.
+//  Copyright © 2016年 lqq. All rights reserved.
+//
+
+#import "QuestionCell.h"
+#import "SingleBtnView.h"
+#import "QuestionModel.h"
+#import "QuestionCellFrame.h"
+#define titleFont  [UIFont fontWithName:@"Helvetica-Bold" size:14]
+@interface QuestionCell()
+@property (weak, nonatomic)  UILabel *titleLabel;
+@property (weak, nonatomic)  SingleBtnView *sectionView;
+
+@end
+
+@implementation QuestionCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.backgroundColor = [UIColor customBackgroundColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        UILabel *titleLabel = [[UILabel alloc]init];
+        titleLabel.textColor = [UIColor colorWithHex:0x333333];
+        titleLabel.font = titleFont;
+        titleLabel.numberOfLines = 0;
+        [self addSubview:titleLabel];
+        self.titleLabel = titleLabel;
+        
+        SingleBtnView *sectionView = [[SingleBtnView alloc]init];
+        [self addSubview:sectionView];
+        self.sectionView = sectionView;
+        
+    }
+    return self;
+}
+- (void)setCellFrame:(QuestionCellFrame *)cellFrame
+{
+    _cellFrame = cellFrame;
+    self.titleLabel.text = [NSString stringWithFormat:@"%@.%@",cellFrame.model.SortId, cellFrame.model.title];
+    self.sectionView.model = cellFrame.model;
+    
+    self.titleLabel.frame = cellFrame.titleFrame;
+    self.sectionView.frame = cellFrame.viewFrame;
+}
+
+@end
+

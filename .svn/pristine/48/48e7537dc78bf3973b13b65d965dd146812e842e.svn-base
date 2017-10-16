@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="lQk-Um-qvz" customClass="TfeedBackView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每日反馈 - DAY2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mB9-b3-1No">
+                    <rect key="frame" x="20" y="10" width="280" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="22" id="o04-QE-vtq"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="感谢您的评价," lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TsO-sG-qoa">
+                    <rect key="frame" x="20" y="66" width="117" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Q4G-J6-CIp"/>
+                        <constraint firstAttribute="width" constant="117" id="sDH-BX-rMi"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kVq-E4-2Yc">
+                    <rect key="frame" x="137" y="87" width="171" height="1"/>
+                    <color key="backgroundColor" red="1" green="0.88235294119999996" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="171" id="bfI-Ev-0hY"/>
+                        <constraint firstAttribute="height" constant="1" id="hwc-Rq-BpD"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="行程描述" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uc3-Mb-pWx">
+                    <rect key="frame" x="20" y="40" width="280" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mgu-xg-N1I">
+                    <rect key="frame" x="137" y="66" width="175" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="46j-zw-Cqu"/>
+                        <constraint firstAttribute="width" constant="175" id="sXN-TV-GXF"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="STHeitiSC-Light" family="Heiti SC" pointSize="18"/>
+                    <state key="normal" title="去提更多意见,请点这">
+                        <color key="titleColor" red="1" green="0.88235294119999996" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="moreOpinion:" destination="lQk-Um-qvz" eventType="touchUpInside" id="v2W-Xu-cgB"/>
+                        <action selector="moreOpinionCancel:" destination="lQk-Um-qvz" eventType="touchCancel" id="GXp-Lv-qxo"/>
+                        <action selector="moreOpinionOut:" destination="lQk-Um-qvz" eventType="touchUpOutside" id="l6u-sL-Hj5"/>
+                        <action selector="moreOpinion_down:" destination="lQk-Um-qvz" eventType="touchDown" id="Kzr-1O-Heb"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.1764705882352941" green="0.80000000000000004" blue="0.4392156862745098" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="Uc3-Mb-pWx" firstAttribute="top" secondItem="mB9-b3-1No" secondAttribute="bottom" constant="8" id="2ww-Vb-hsD"/>
+                <constraint firstAttribute="trailing" secondItem="mB9-b3-1No" secondAttribute="trailing" constant="20" id="5wf-T4-Ozu"/>
+                <constraint firstItem="TsO-sG-qoa" firstAttribute="top" secondItem="Uc3-Mb-pWx" secondAttribute="bottom" constant="8" id="8pp-Fl-u9v"/>
+                <constraint firstItem="mB9-b3-1No" firstAttribute="top" secondItem="lQk-Um-qvz" secondAttribute="top" constant="10" id="Ljo-D6-bSg"/>
+                <constraint firstItem="TsO-sG-qoa" firstAttribute="leading" secondItem="lQk-Um-qvz" secondAttribute="leading" constant="20" id="MAw-st-T97"/>
+                <constraint firstItem="Uc3-Mb-pWx" firstAttribute="leading" secondItem="mB9-b3-1No" secondAttribute="leading" id="ULI-mU-I09"/>
+                <constraint firstItem="Mgu-xg-N1I" firstAttribute="leading" secondItem="TsO-sG-qoa" secondAttribute="trailing" id="awz-DZ-hSu"/>
+                <constraint firstItem="kVq-E4-2Yc" firstAttribute="top" secondItem="Mgu-xg-N1I" secondAttribute="bottom" id="bEj-Ma-7sL"/>
+                <constraint firstItem="Uc3-Mb-pWx" firstAttribute="width" secondItem="mB9-b3-1No" secondAttribute="width" id="c6o-go-c0V"/>
+                <constraint firstItem="Mgu-xg-N1I" firstAttribute="top" secondItem="TsO-sG-qoa" secondAttribute="top" id="iuN-OE-o6s"/>
+                <constraint firstItem="kVq-E4-2Yc" firstAttribute="leading" secondItem="lQk-Um-qvz" secondAttribute="leading" constant="137" id="k2H-6I-J0O"/>
+                <constraint firstItem="mB9-b3-1No" firstAttribute="leading" secondItem="lQk-Um-qvz" secondAttribute="leading" constant="20" id="unU-EE-rEd"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="contentLabel" destination="Uc3-Mb-pWx" id="LhX-v0-faZ"/>
+                <outlet property="titleLabel" destination="mB9-b3-1No" id="QY5-8u-1g4"/>
+                <outlet property="underline" destination="kVq-E4-2Yc" id="7UV-Pw-AYz"/>
+            </connections>
+            <point key="canvasLocation" x="312" y="305"/>
+        </view>
+    </objects>
+</document>

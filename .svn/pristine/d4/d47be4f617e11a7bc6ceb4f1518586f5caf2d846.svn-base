@@ -1,0 +1,196 @@
+//
+//  DetailFeedBackController.m
+//  StudyTour
+//
+//  Created by use on 16/6/12.
+//  Copyright © 2016年 魏鹏. All rights reserved.
+//
+
+#import "DetailFeedBackController.h"
+#import "DetailFeedBackCell.h"
+#import "DetailFeedBackFooterView.h"
+
+#import "Downloader.h"
+#import "UserInfoModel.h"
+
+@interface DetailFeedBackController ()<UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, copy) NSArray *icons;
+@property (nonatomic, copy) NSArray *types;
+@property (nonatomic, copy) NSArray *results;
+
+@property (nonatomic, copy) NSString *feedbackContent;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *groupIdLabel;
+@property (weak, nonatomic) IBOutlet UILabel *introNameLabel;
+@end
+
+@implementation DetailFeedBackController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+}
+
+- (void)configView
+{
+    self.navigationItem.title = @"每日反馈";
+    self.view.backgroundColor = [UIColor customBackgroundColor];
+    _groupIdLabel.text = [NSString stringWithFormat:@"团号：%@", _groupId];
+    _introNameLabel.text = [NSString stringWithFormat:@"事件：%@", _introName];
+    
+    [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([DetailFeedBackCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([DetailFeedBackCell class])];
+    DetailFeedBackFooterView *footerView = [[DetailFeedBackFooterView alloc] init];
+    __weak typeof(self) weakself = self;
+    [footerView setSubmitBlock:^(NSString *content) {
+        weakself.feedbackContent = content;
+        [weakself updateFeedBackToServer];
+    }];
+    _tableView.tableFooterView = footerView;
+    
+    _tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+}
+
+- (void)configData
+{
+    _icons = @[@"ic_df_eat", @"ic_df_stay", @"ic_df_trans", @"ic_df_study", @"ic_df_play", @"ic_df_teacher"];
+    _types = @[@"吃", @"住", @"行", @"学", @"游", @"领队"];
+    _results = @[@"0", @"0", @"0", @"0", @"0", @"0"];
+}
+
+#pragma mark -- 数据相关
+- (void)updateFeedBackToServer
+{
+    [self showHud];
+    UserInfoModel *userInfo = [UserInfoModel sharedUserInfo];
+    
+    Downloader *downloader = [[Downloader alloc] init];
+    NSDictionary *param = @{@"incidentId":_incidentId,
+                            @"stuName":userInfo.stuName,
+                            @"cardId":userInfo.cardId,
+                            @"groupId":userInfo.groupId,
+                            @"total":@"0",
+                            @"eat":_results[0],
+                            @"live":_results[1],
+                            @"walk":_results[2],
+                            @"learn":_results[3],
+                            @"play":_results[4],
+                            @"leader":_results[5],
+                            @"replenish":_feedbackContent};
+    [downloader POST:FeedbackSubmit param:param wating:^{
+        
+    } fail:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHud];
+            [self showTips:NetWorkTips];
+        });
+    } success:^(NSDictionary *originData) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHud];
+            [self showTips:SubmitDataSuceesTips];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_MSEC), dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
+        });
+    } refresh:YES];
+}
+
+#pragma mark -- UITable View Data Source
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _icons.count;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DetailFeedBackCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([DetailFeedBackCell class]) forIndexPath:indexPath];
+    
+    cell.iconPath = _icons[indexPath.row];
+    cell.typeName = _types[indexPath.row];
+    __weak typeof(self) weakself = self;
+    [cell setChooseBlock:^(BOOL choose) {
+        NSMutableArray *tempArr = [weakself.results mutableCopy];
+        tempArr[indexPath.row] = choose ? @"1" : @"0";
+        weakself.results = [tempArr copy];
+    }];
+    
+    return cell;
+}
+
+#pragma mark -- UITable View Delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DetailFeedBackCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    NSString *result = _results[indexPath.row];
+    if ([result isEqualToString:@"0"]) {
+        result = @"1";
+    } else {
+        result = @"0";
+    }
+    NSMutableArray *tempArr = [_results mutableCopy];
+    tempArr[indexPath.row] = result;
+    _results = [tempArr copy];
+    
+    cell.chooseResult = result;
+    NSLog(@"{\n%@\n}", _results);
+}
+
+#pragma mark -- 键盘弹出/消失事件
+- (void)jp_KeyBoardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    NSNumber *bValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDur = [bValue floatValue];
+    
+    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    int kbheight = keyboardRect.size.height;
+    
+    [UIView animateWithDuration:animationDur animations:^{
+        self.tableView.contentOffset = CGPointMake(0, kbheight);
+    }];
+}
+
+- (void)jp_KeyBoardWillHide:(NSNotification *)notification
+{
+    NSDictionary *userInfo = notification.userInfo;
+    id bValue = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSTimeInterval animationDur = [bValue floatValue];
+    [UIView animateWithDuration:animationDur animations:^{
+        self.tableView.contentOffset = CGPointMake(0, 0);
+    }];
+}
+
+#pragma mark -- LifeCircle
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self configData];
+    [self configView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    NSNotificationCenter *notifiCenter = [NSNotificationCenter defaultCenter];
+    [notifiCenter addObserver:self selector:@selector(jp_KeyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [notifiCenter addObserver:self selector:@selector(jp_KeyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    NSNotificationCenter *notifiCenter = [NSNotificationCenter defaultCenter];
+    [notifiCenter removeObserver:self];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

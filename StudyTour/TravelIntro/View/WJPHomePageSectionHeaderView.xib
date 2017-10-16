@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1808" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="9wK-hx-Zdv" customClass="WJPHomePageSectionHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jlU-9l-EZP">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
+                    <color key="backgroundColor" red="0.96862745100000003" green="0.95294117649999999" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g7k-Bw-ats">
+                    <rect key="frame" x="16" y="32" width="4" height="16"/>
+                    <color key="backgroundColor" red="0.1764705882" green="0.74509803919999995" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="e5J-05-pbH"/>
+                        <constraint firstAttribute="width" constant="4" id="yuY-OZ-x3g"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="热门线路" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EKf-er-DSO">
+                    <rect key="frame" x="36" y="30" width="201" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="201" id="agP-Ad-pxL"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.1764705882" green="0.74509803919999995" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="EKf-er-DSO" firstAttribute="centerY" secondItem="g7k-Bw-ats" secondAttribute="centerY" id="8x8-mM-BVn"/>
+                <constraint firstItem="EKf-er-DSO" firstAttribute="leading" secondItem="g7k-Bw-ats" secondAttribute="trailing" constant="16" id="GLx-cx-Hdm"/>
+                <constraint firstAttribute="bottom" secondItem="g7k-Bw-ats" secondAttribute="bottom" id="GoA-f8-1F9"/>
+                <constraint firstItem="g7k-Bw-ats" firstAttribute="leading" secondItem="9wK-hx-Zdv" secondAttribute="leading" constant="16" id="MnR-Ra-PYS"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="headerTitleLabel" destination="EKf-er-DSO" id="DFg-wA-jbk"/>
+            </connections>
+            <point key="canvasLocation" x="562.5" y="106"/>
+        </view>
+    </objects>
+</document>

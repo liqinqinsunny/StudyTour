@@ -1,0 +1,26 @@
+//
+//  WJPWriteTravelNoteViewController.h
+//  StudyTourLeaderSide
+//
+//  Created by use on 16/5/10.
+//  Copyright © 2016年 wjp. All rights reserved.
+//
+
+#import "RootViewController.h"
+
+@interface WJPWriteTravelNoteViewController : RootViewController
+
+@property (nonatomic, copy) NSString *incidentId;
+@property (nonatomic, copy) NSString *templateId;
+@property (nonatomic, copy) NSString *generalizeId;
+
+@property (nonatomic, copy) NSString *titleString;
+@property (nonatomic, copy) NSString *tagName;
+
+@property (nonatomic, assign) BOOL needRequest;
+@property (nonatomic, assign) BOOL isFromSuperViewController;
+
+@property (nonatomic, copy) NSArray *travelArray;
+@property (nonatomic, assign) NSInteger currentIndex;
+
+@end

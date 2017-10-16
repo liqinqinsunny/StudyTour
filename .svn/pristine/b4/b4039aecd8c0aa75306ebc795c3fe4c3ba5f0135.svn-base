@@ -1,0 +1,28 @@
+//
+//  SingleBtnView.h
+//  QuestionNaire
+//
+//  Created by lqq on 16/6/16.
+//  Copyright © 2016年 lqq. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+@class SingleBtnView;
+@class QuestionModel;
+
+@protocol SingleBtnViewDelegate<NSObject>
+@optional
+- (void)SingleBtnView:(SingleBtnView *)singleBtnView BtnClick:(UIButton *)btn;
+
+@end
+
+@interface SingleBtnView : UIView
+
+@property(nonatomic,strong) QuestionModel *model;
+
+@property(nonatomic,assign) id<SingleBtnViewDelegate> delegate;
+
+@property(nonatomic,assign) CGFloat Height;
+
+
+@end

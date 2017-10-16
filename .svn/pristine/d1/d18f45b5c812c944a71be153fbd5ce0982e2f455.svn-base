@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="yWG-PL-Guh" customClass="FfeedBackView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每日反馈 - DAY2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sk6-Sh-ntq">
+                    <rect key="frame" x="20" y="10" width="280" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="22" id="sY7-bc-1Tk"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="反馈处理中，稍后与您联系..." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YVl-dA-Rco">
+                    <rect key="frame" x="20" y="66" width="280" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="vW1-vQ-bMm"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每日行程描述" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bU8-Jm-BHf">
+                    <rect key="frame" x="20" y="40" width="280" height="18"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.1764705882" green="0.80000000000000004" blue="0.43921568630000002" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="bU8-Jm-BHf" firstAttribute="leading" secondItem="Sk6-Sh-ntq" secondAttribute="leading" id="2Tk-Wn-SjS"/>
+                <constraint firstItem="Sk6-Sh-ntq" firstAttribute="top" secondItem="yWG-PL-Guh" secondAttribute="top" constant="10" id="2gD-PK-lGf"/>
+                <constraint firstItem="bU8-Jm-BHf" firstAttribute="width" secondItem="Sk6-Sh-ntq" secondAttribute="width" id="4WE-zy-Uvu"/>
+                <constraint firstItem="YVl-dA-Rco" firstAttribute="top" secondItem="bU8-Jm-BHf" secondAttribute="bottom" constant="8" id="FCa-VI-TEE"/>
+                <constraint firstItem="Sk6-Sh-ntq" firstAttribute="leading" secondItem="yWG-PL-Guh" secondAttribute="leading" constant="20" id="Ov9-8c-rv6"/>
+                <constraint firstItem="YVl-dA-Rco" firstAttribute="leading" secondItem="yWG-PL-Guh" secondAttribute="leading" constant="20" id="W9O-Rv-YCP"/>
+                <constraint firstAttribute="trailing" secondItem="Sk6-Sh-ntq" secondAttribute="trailing" constant="20" id="h6M-wY-ccX"/>
+                <constraint firstAttribute="trailing" secondItem="YVl-dA-Rco" secondAttribute="trailing" constant="20" id="rcb-GF-yr7"/>
+                <constraint firstItem="bU8-Jm-BHf" firstAttribute="top" secondItem="Sk6-Sh-ntq" secondAttribute="bottom" constant="8" id="sXP-ah-bXP"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="contentLabel" destination="bU8-Jm-BHf" id="Knk-8l-eQg"/>
+                <outlet property="titleLabel" destination="Sk6-Sh-ntq" id="DKX-WU-LwF"/>
+            </connections>
+            <point key="canvasLocation" x="402" y="312.5"/>
+        </view>
+    </objects>
+</document>

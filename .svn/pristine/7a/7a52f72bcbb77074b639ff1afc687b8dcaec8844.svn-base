@@ -1,0 +1,54 @@
+//
+//  UserInfoModel.m
+//  StudyTour
+//
+//  Created by lqq on 16/6/2.
+//  Copyright © 2016年 lqq. All rights reserved.
+//
+
+#import "UserInfoModel.h"
+#import "MJExtension.h"
+
+@implementation UserInfoModel
+
+static UserInfoModel *_instance;
+
+- (instancetype)init
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _instance = [super init];
+        
+    });
+    return _instance;
+}
+
++ (UserInfoModel *)sharedUserInfo
+{
+    if (_instance == nil) {
+        _instance = [[self alloc]init];
+        
+        NSDictionary *dict = [[NSUserDefaults standardUserDefaults] objectForKey:@"userinfo"];
+        if (dict != nil) {
+            _instance = [UserInfoModel mj_objectWithKeyValues:dict];
+        }
+    }
+    return _instance;
+}
+
++ (instancetype)allocWithZone:(struct _NSZone *)zone
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _instance = [super allocWithZone:zone];
+    });
+    return _instance;
+}
+
+- (void)saveUserinfo:(NSDictionary *)userinfoData
+{
+    [[NSUserDefaults standardUserDefaults] setObject:userinfoData forKey:@"userinfo"];
+    [NSUserDefaults resetStandardUserDefaults];
+}
+
+@end

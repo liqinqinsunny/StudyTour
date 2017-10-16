@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1808" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="WJPHomeNewsCell" rowHeight="60" id="KGk-i7-Jjw" customClass="WJPHomeNewsCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="342" height="59"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ML9-D1-IKP">
+                        <rect key="frame" x="24" y="21" width="318" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.53333333333333333" green="0.45882352941176469" blue="0.39215686274509803" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vfq-Z3-F4W">
+                        <rect key="frame" x="16" y="58" width="343" height="1"/>
+                        <color key="backgroundColor" red="0.82745098039215681" green="0.79607843137254897" blue="0.74117647058823533" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="lXj-xn-0lF"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Vfq-Z3-F4W" secondAttribute="bottom" id="7BX-fa-y1l"/>
+                    <constraint firstItem="ML9-D1-IKP" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Bqg-BA-5Ph"/>
+                    <constraint firstAttribute="trailing" secondItem="ML9-D1-IKP" secondAttribute="trailing" id="C5z-gk-KEs"/>
+                    <constraint firstItem="Vfq-Z3-F4W" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="OQQ-n7-EUE"/>
+                    <constraint firstItem="ML9-D1-IKP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="24" id="flG-NM-O1d"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Vfq-Z3-F4W" secondAttribute="trailing" constant="-25" id="mCc-rf-B5B"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.96862745100000003" green="0.95294117649999999" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+            <connections>
+                <outlet property="newsLabel" destination="ML9-D1-IKP" id="Hlg-UW-eaX"/>
+            </connections>
+            <point key="canvasLocation" x="213.5" y="357"/>
+        </tableViewCell>
+    </objects>
+</document>

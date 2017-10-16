@@ -1,0 +1,362 @@
+//
+//  WJPTravelNoteHomePageController.m
+//  StudyTour
+//
+//  Created by use on 16/6/3.
+//  Copyright © 2016年 魏鹏. All rights reserved.
+//
+
+#import "WJPTravelNoteHomePageController.h"
+
+#import "Downloader.h"
+#import "UserInfoModel.h"
+#import "NetWorkErrorView.h"
+
+#import "TravelNotePerDayModel.h"
+#import "TravelNoteCoverModel.h"
+#import "TravelNoteCoverCell.h"
+#import "FeecBackHeaderView.h"
+
+#import "WJPTravelNoteDetailControllerViewController.h"
+#import "DetailFeedBackController.h"
+#import "TraveIntroViewController.h"
+
+#import "WJPCreateQRCodeView.h"
+#import "NSString+Base64.h"
+
+#define lastPath    [NSString stringWithFormat:@"TravelNoteHomePageCache%@.json",([UserInfoModel sharedUserInfo].cardId)]
+#define cachefilePath   [[HomePath stringByAppendingPathComponent:RootPath] stringByAppendingPathComponent:(lastPath)]
+
+@interface WJPTravelNoteHomePageController () <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (nonatomic, assign) BOOL loadCacheSuccess;
+@property (nonatomic, copy) NSArray *dataArray;
+
+@property (nonatomic, weak) WJPCreateQRCodeView *qrcodeView;
+
+@end
+
+NSString * const headerViewID = @"FeecBackHeaderView";
+
+@implementation WJPTravelNoteHomePageController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    
+    [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([TravelNoteCoverCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([TravelNoteCoverCell class])];
+    [_tableView registerNib:[UINib nibWithNibName:headerViewID bundle:nil] forHeaderFooterViewReuseIdentifier:headerViewID];
+}
+
+#pragma mark -- 视图相关
+- (void)setNavigationItemAppearence
+{
+    self.navigationItem.title = @"游学记录";
+    
+    self.navigationItem.hidesBackButton = YES;
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setBackgroundImage:[UIImage imageNamed:@"ic_nav_home.png"] forState:UIControlStateNormal];
+    btn.frame = CGRectMake(0, 0, 44, 44);
+    btn.adjustsImageWhenHighlighted = NO;
+    [btn addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *back = [[UIBarButtonItem alloc] initWithCustomView:btn];
+    self.navigationItem.leftBarButtonItem = back;
+    
+    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    rightBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [rightBtn setBackgroundImage:[UIImage imageNamed:@"icon_qr.png"] forState:UIControlStateNormal];
+    rightBtn.frame = CGRectMake(0, 0, 24, 24);
+    rightBtn.adjustsImageWhenHighlighted = NO;
+    [rightBtn addTarget:self action:@selector(createQRCode:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *qrCodeItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+    self.navigationItem.rightBarButtonItems = @[qrCodeItem];
+}
+
+- (void)back:(UIButton *)sender
+{
+    TraveIntroViewController *into = [[TraveIntroViewController alloc]init];
+    [self.navigationController.view.layer addAnimation:[self getTransition] forKey:kCATransition];
+    [self.navigationController pushViewController:into animated:NO];
+}
+
+- (void)createQRCode:(UIButton *)sender
+{
+    sender.enabled = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    UserInfoModel *userInfo = [UserInfoModel sharedUserInfo];
+    NSString *qrInfoString = [NSString stringWithFormat:@"StudyTour)(%@)(%@)(%@", userInfo.cardId, userInfo.stuName, userInfo.journeyId];
+    qrInfoString = [qrInfoString base64EncodedString];
+    
+    WJPCreateQRCodeView *qrcodeView = [[WJPCreateQRCodeView alloc] init];
+    qrcodeView.QRCodeInfo = qrInfoString;
+    __weak typeof(self) weakSelf = self;
+    [qrcodeView setCloseBlock:^{
+        weakSelf.navigationItem.rightBarButtonItem.enabled = YES;
+    }];
+    [self.view addSubview:qrcodeView];
+    _qrcodeView = qrcodeView;
+}
+
+#pragma mark -- 数据相关
+- (void)loadTravelNoteDataFromServer
+{
+    Downloader *downloader = [[Downloader alloc] init];
+    NSMutableDictionary *tempParam = [NSMutableDictionary dictionary];
+    
+    tempParam[@"cardId"] = [UserInfoModel sharedUserInfo].cardId;
+    tempParam[@"groupId"] = [UserInfoModel sharedUserInfo].groupId;
+    
+    NSDictionary *param = [tempParam copy];
+    // 缓存数据
+    NSDictionary *tempdict = [self readSaveData:cachefilePath];
+    
+    [downloader POST:AllGeneralize cachePath:cachefilePath param:param wating:^{
+    } fail:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_loadCacheSuccess) {
+                [self loadTravelNoteDataFromCache];
+                [self showTips:NetWorkTips] ;
+            } else {
+                [self addNetWorkErrorView];
+            }
+        });
+    } success:^(NSDictionary *originData) {
+        // 如果缓存数据和现在获取的数据一样的就返回
+        if ([tempdict isEqualToDictionary:originData]) {
+            /**
+             *  测试，查看评价
+             */
+//            NSArray *dayArray = originData[@"day"];
+//            for (NSDictionary *dict in dayArray) {
+//                NSLog(@"-%@-", dict[@"feedback"]);
+//            }
+//            
+            return ;
+        }
+        [self ParseData:originData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_tableView reloadData];
+        });
+        
+    } refresh:YES];
+}
+
+// 添加错误提示页
+- (void)addNetWorkErrorView
+{
+    NetWorkErrorView *errorView = [[NetWorkErrorView alloc] init];
+    errorView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+    __weak typeof(errorView) _ev = errorView;
+    __weak typeof(self) weakself = self;
+    [errorView setOperateBlock:^{
+        __strong NetWorkErrorView *_sev = _ev;
+        [_sev removeFromSuperview];
+        [weakself loadTravelNoteDataFromServer];
+        _sev = nil;
+    }];
+    [self.view addSubview:errorView];
+}
+
+- (void)loadTravelNoteDataFromCache
+{
+    NSDictionary *dict =[self readSaveData:cachefilePath];
+    if(!dict){
+        _loadCacheSuccess = NO;
+        return;
+    }else
+    {
+        _loadCacheSuccess = YES;
+        [self ParseData:dict];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_tableView reloadData];
+        });
+    }
+}
+
+// 读取缓存的数据
+- (NSDictionary *)readSaveData:(NSString *)filePath
+{
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    if (!data) {
+        return nil;
+    }
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    if(dict != nil){
+        return dict;
+    }
+    return nil;
+}
+
+// 解析数据
+- (void)ParseData:(NSDictionary *)originData
+{
+    if ([originData[@"result"] isEqualToString:@"T"]) {
+        NSArray *dayArray = originData[@"day"];
+        
+        NSMutableArray *tempArray = [NSMutableArray new];
+        for (NSDictionary *dict in dayArray) {
+            TravelNotePerDayModel *model = [TravelNotePerDayModel createTravelNotePerDayModelWithDict:dict];
+            [tempArray addObject:model];
+        }
+        
+        _dataArray = [tempArray copy];
+    }
+}
+
+- (void)updateFeedBackToServerWithStatus:(NSInteger)status incidentId:(NSString *)incidentId inSection:(NSInteger)section
+{
+    [self showHud];
+    UserInfoModel *userInfo = [UserInfoModel sharedUserInfo];
+    NSString *feedbackStatus = [NSString stringWithFormat:@"%ld", (long)status];
+    Downloader *downloader = [[Downloader alloc] init];
+    NSDictionary *param = @{@"incidentId":incidentId,
+                            @"stuName":userInfo.stuName,
+                            @"cardId":userInfo.cardId,
+                            @"groupId":userInfo.groupId,
+                            @"total":feedbackStatus};
+    
+    [downloader POST:FeedbackSubmit param:param wating:^{
+        
+    } fail:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHud];
+            [self showTips:SubmitDataFailTips];
+            UITableViewHeaderFooterView *headerView = [_tableView headerViewForSection:section];
+            FeecBackHeaderView *fbheaderView = (FeecBackHeaderView *)headerView;
+            [fbheaderView setFeedbackStatus:[NSString stringWithFormat:@"9"]];
+        });
+    } success:^(NSDictionary *originData) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideHud];
+            [self showTips:SubmitDataSuceesTips];
+        });
+    } refresh:YES];
+}
+
+#pragma mark -- UITable View Delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TravelNotePerDayModel *dayModel = _dataArray[indexPath.section];
+    TravelNoteCoverModel *coverModel = dayModel.travelArray[indexPath.row];
+
+    WJPTravelNoteDetailControllerViewController *detailVC = [[WJPTravelNoteDetailControllerViewController alloc] init];
+
+    detailVC.introId = dayModel.dayId;
+    detailVC.templateId = coverModel.templateId;
+    detailVC.travelArray = dayModel.travelArray;
+    detailVC.currentIndex = indexPath.row;
+    [self.navigationController pushViewController:detailVC animated:YES];
+}
+
+#pragma mark -- UITable View Data Source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return _dataArray.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    TravelNotePerDayModel *model = _dataArray[section];
+    return model.travelArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section >= _dataArray.count) {
+        return [UITableViewCell new];
+    }
+    TravelNotePerDayModel *dayModel = _dataArray[indexPath.section];
+    if (indexPath.row >= dayModel.travelArray.count) {
+        return [UITableViewCell new];
+    }
+    TravelNoteCoverModel *model = dayModel.travelArray[indexPath.row];
+    TravelNoteCoverCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([TravelNoteCoverCell class]) forIndexPath:indexPath];
+    cell.model = model;
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (ScreenWidth == 375) {
+        return 270;
+    }
+    CGFloat actualDistance = (ScreenWidth - 375) * 194.0 / 343;
+    return 270 + actualDistance;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    FeecBackHeaderView *headerView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerViewID];
+    TravelNotePerDayModel *model = _dataArray[section];
+    headerView.model = model;
+    
+    UserInfoModel *userInfo = [UserInfoModel sharedUserInfo];
+    __weak typeof(self) weakself = self;
+    [headerView setFeedbackBlock:^(NSInteger index) {
+        if (index == 0) {
+            DetailFeedBackController *dfVC = [[DetailFeedBackController alloc] init];
+            dfVC.incidentId = model.dayId;
+            dfVC.introName = model.dayName;
+            dfVC.groupId = userInfo.groupId;
+            [self.navigationController pushViewController:dfVC animated:YES];
+        } else {
+            [weakself updateFeedBackToServerWithStatus:index incidentId:model.dayId inSection:section];
+        }
+    }];
+    return headerView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    TravelNotePerDayModel *model = _dataArray[section];
+    if ([model.type isEqualToString:@"0"]) {
+        return 50;
+    } else {
+        return 156;
+    }
+}
+
+#pragma mark -- 点击/跳转
+
+#pragma mark -- 转场动画
+- (CATransition *)getTransition
+{
+    CATransition *transition = [CATransition animation];
+    transition.type = kCATransitionMoveIn;
+//    if (isUp) {
+        transition.subtype = kCATransitionFromLeft;
+//    } else {
+//        transition.subtype = kCATransitionFromBottom;
+//    }
+    transition.duration = 0.2;
+//    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+    return transition;
+}
+
+
+#pragma mark -- LifeCircle
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self loadTravelNoteDataFromCache];
+    [self loadTravelNoteDataFromServer];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+@end

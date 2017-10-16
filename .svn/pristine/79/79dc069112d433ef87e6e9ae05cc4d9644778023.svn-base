@@ -1,0 +1,100 @@
+//
+//  Downloader.h
+//  StudyTour
+//
+//  Created by 魏鹏 on 15/12/1.
+//  Copyright © 2015年 魏鹏. All rights reserved.
+//
+
+#import "RootObject.h"
+
+@interface Downloader : RootObject
+
+@property (nonatomic,weak) UIViewController *viewController; //加载了cacheManager对象的视图控制器
+
+#pragma mark -- 不需要缓存请求
+/**
+ *  不需要缓存的网络请求
+ *
+ *  @param url          url
+ *  @param path        缓存路径
+ *  @param decodeBlock 成功下载数据
+ *  @param waitBlock   下载过程等待
+ *  @param failBlock   下载失败
+ *  @param refresh     是否需要刷新
+ */
+
+//- (void) GET:(NSString *)url
+//     success:(void (^)(NSDictionary *originData))decodeBlock
+//      wating:(void (^)())waitBlock
+//        fail:(void (^)())failBlock
+//     refresh:(BOOL)refresh;
+
+- (void) POST:(NSString *)url
+        param:(id)parameters
+       wating:(void (^)())waitBlock
+         fail:(void (^)())failBlock
+      success:(void (^)(NSDictionary *originData))decodeBlock
+      refresh:(BOOL)refresh;
+
+#pragma mark -- 需要缓存请求
+/**
+ *  需要缓存的网络请求
+ *
+ *  @param url          url
+ *  @param path        缓存路径
+ *  @param decodeBlock 成功下载数据
+ *  @param waitBlock   下载过程等待
+ *  @param failBlock   下载失败
+ *  @param refresh     是否需要刷新
+ */
+//- (void) GET:(NSString *)url
+//   cachePath:(NSString *)path
+//     success:(void (^)(NSDictionary *originData))decodeBlock
+//      wating:(void (^)())waitBlock
+//        fail:(void (^)())failBlock
+//     refresh:(BOOL)refresh;
+
+- (void) POST:(NSString *)url
+    cachePath:(NSString *)path
+        param:(id)parameters
+       wating:(void (^)())waitBlock
+         fail:(void (^)())failBlock
+      success:(void (^)(NSDictionary *originData))decodeBlock
+      refresh:(BOOL)refresh;
+
+#pragma mark -- 下载文件
+//- (void)downloadFileWithOption:(NSDictionary *)paramDic
+//                 withInferface:(NSString*)requestURL
+//                     savedPath:(NSString*)savedPath
+//               downloadSuccess:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+//               downloadFailure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+//                      progress:(void (^)(float progress))progress;
+
+- (void)downloadFileWithOption:(NSDictionary *)paramDic
+                 withURLString:(NSString*)requestURL
+                     savedPath:(NSString*)savedPath
+               downloadSuccess:(void (^)(NSString *path))success
+               downloadFailure:(void (^)(NSError *error))failure
+                      progress:(void (^)(float progress))progress;
+
+- (void)uploadSingleFileWithOption:(NSDictionary *)paramDic
+                     withURLString:(NSString*)requestURL
+                          fileName:(NSString*)fileName
+                          fileData:(NSData*)fileData
+                   downloadSuccess:(void (^)(id responseObject))success
+                   downloadFailure:(void (^)(NSError *error))failure
+                          progress:(void (^)(float progress))progress;
+
+- (void)uploadMultiPartFileWithOption:(NSDictionary *)paramDic
+                        withURLString:(NSString*)requestURL
+                             fileName:(NSString*)fileName
+                            filePaths:(NSArray*)filePathArray
+                      downloadSuccess:(void (^)(id responseObject))success
+                      downloadFailure:(void (^)(NSError *error))failure
+                             progress:(void (^)(float progress))progress;
+
+- initWithController:(UIViewController *)viewController;
+
+@property (nonatomic,strong) UIView *customErrorView;
+@end

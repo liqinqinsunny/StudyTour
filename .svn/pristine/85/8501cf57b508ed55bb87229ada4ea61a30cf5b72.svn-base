@@ -1,0 +1,64 @@
+//
+//  InfomationLearningCell.m
+//  StudyTourLeaderSide
+//
+//  Created by use on 16/4/20.
+//  Copyright © 2016年 wjp. All rights reserved.
+//
+
+#import "InfomationLearningCell.h"
+#import "WJPCircleProgressView.h"
+
+@interface InfomationLearningCell ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *titleIcon;
+@property (weak, nonatomic) IBOutlet UILabel *taskTitleLabel;
+@property (weak, nonatomic) IBOutlet UIView *downloadProcessView;
+@property (weak, nonatomic) IBOutlet UILabel *downloadCountLabel;
+
+@property (weak, nonatomic) WJPCircleProgressView *progress;
+@end
+
+@implementation InfomationLearningCell
+
+- (void)awakeFromNib {
+    WJPCircleProgressView *progress = [[WJPCircleProgressView alloc]initWithFrame:CGRectMake(0, 0, 28, 28)];
+    progress.arcFinishColor = [UIColor themeColor];
+    progress.arcUnfinishColor = [UIColor themeColor];
+    progress.arcBackColor = [UIColor lightGrayColor];
+    progress.width = 2;
+    progress.percent = 0;
+    [_downloadProcessView addSubview:progress];
+    _progress = progress;
+}
+
+- (void)setModel:(WJPTaskModel *)model
+{
+    _model = model;
+    _cuttingline.hidden = NO;
+    _taskTitleLabel.text = model.title;
+    [self setDownloadCount:[model.downloadCount integerValue]];
+    if (_model.noCustomBackgroundColor) {
+        self.backgroundColor = [UIColor whiteColor];
+    } else {
+        self.backgroundColor = [UIColor customBackgroundColor];
+    }
+}
+
+- (void)setPersent:(CGFloat)persent
+{
+    _progress.percent = persent;
+}
+
+- (void)setDownloadCount:(NSInteger)downloadCount
+{
+    _downloadCount = downloadCount;
+    _downloadCountLabel.text = [NSString stringWithFormat:@"%ld", (long)downloadCount];
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    // Configure the view for the selected state
+}
+
+@end

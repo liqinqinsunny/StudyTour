@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="uj7-SU-meT" customClass="TravelNoteHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="继续滑动，查看上一个话题&quot;第一顿晚餐&quot;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gGu-CE-tIH">
+                    <rect key="frame" x="16" y="32" width="343" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.46666666670000001" green="0.46666666670000001" blue="0.46666666670000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_up.png" translatesAutoresizingMaskIntoConstraints="NO" id="Rty-P0-lCw">
+                    <rect key="frame" x="180" y="55" width="16" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="16" id="al7-rj-Dvy"/>
+                        <constraint firstAttribute="height" constant="16" id="mWN-CE-Shr"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="0.96862745100000003" green="0.95294117649999999" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="gGu-CE-tIH" firstAttribute="top" secondItem="uj7-SU-meT" secondAttribute="top" constant="32" id="PSR-vu-x6Q"/>
+                <constraint firstItem="gGu-CE-tIH" firstAttribute="leading" secondItem="uj7-SU-meT" secondAttribute="leading" constant="16" id="a3o-GG-eh2"/>
+                <constraint firstItem="Rty-P0-lCw" firstAttribute="top" secondItem="gGu-CE-tIH" secondAttribute="bottom" constant="8" id="eU9-Ww-MtR"/>
+                <constraint firstAttribute="trailing" secondItem="gGu-CE-tIH" secondAttribute="trailing" constant="16" id="feL-Jd-bpK"/>
+                <constraint firstItem="Rty-P0-lCw" firstAttribute="centerX" secondItem="uj7-SU-meT" secondAttribute="centerX" id="j8O-AE-hIS"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="205" y="458"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_up.png" width="16" height="16"/>
+    </resources>
+</document>

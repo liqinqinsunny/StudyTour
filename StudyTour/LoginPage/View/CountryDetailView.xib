@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="xf6-uT-c4Y" customClass="CountryDetailView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FsM-cr-Q33">
+                    <rect key="frame" x="16" y="237" width="343" height="194"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="JjS-j7-kQ7">
+                            <rect key="frame" x="4" y="4" width="335" height="143"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="JjS-j7-kQ7" secondAttribute="height" multiplier="335:143" id="Y72-eq-GjK"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mTx-06-NPT">
+                            <rect key="frame" x="16" y="157" width="311" height="15"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="JjS-j7-kQ7" firstAttribute="leading" secondItem="FsM-cr-Q33" secondAttribute="leading" constant="4" id="Bbq-ox-dtB"/>
+                        <constraint firstItem="mTx-06-NPT" firstAttribute="leading" secondItem="FsM-cr-Q33" secondAttribute="leading" constant="16" id="DTd-dA-eWl"/>
+                        <constraint firstItem="JjS-j7-kQ7" firstAttribute="top" secondItem="FsM-cr-Q33" secondAttribute="top" constant="4" id="KSr-qy-G3o"/>
+                        <constraint firstAttribute="trailing" secondItem="mTx-06-NPT" secondAttribute="trailing" constant="16" id="Lm5-WS-vra"/>
+                        <constraint firstAttribute="trailing" secondItem="JjS-j7-kQ7" secondAttribute="trailing" constant="4" id="Tnk-Jo-dMU"/>
+                        <constraint firstItem="mTx-06-NPT" firstAttribute="top" secondItem="JjS-j7-kQ7" secondAttribute="bottom" constant="10" id="YP7-Yw-oNx"/>
+                        <constraint firstAttribute="bottom" secondItem="mTx-06-NPT" secondAttribute="bottom" constant="22" id="pwj-xT-QKV"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="FsM-cr-Q33" firstAttribute="centerY" secondItem="xf6-uT-c4Y" secondAttribute="centerY" id="8jt-ig-r0J"/>
+                <constraint firstItem="FsM-cr-Q33" firstAttribute="leading" secondItem="xf6-uT-c4Y" secondAttribute="leading" constant="16" id="Xmc-Oh-Msw"/>
+                <constraint firstAttribute="trailing" secondItem="FsM-cr-Q33" secondAttribute="trailing" constant="16" id="Zbs-m3-IBe"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+            <connections>
+                <outlet property="countryContent" destination="mTx-06-NPT" id="vCa-ZY-0N9"/>
+                <outlet property="countryImage" destination="JjS-j7-kQ7" id="4cp-YW-fMw"/>
+            </connections>
+            <point key="canvasLocation" x="531.5" y="327.5"/>
+        </view>
+    </objects>
+</document>

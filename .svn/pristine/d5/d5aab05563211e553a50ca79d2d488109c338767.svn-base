@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="d2K-aq-LcK" customClass="FeecBackHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="156"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sNp-HA-kOB">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="156"/>
+                    <color key="backgroundColor" red="0.96862745100000003" green="0.95294117649999999" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V2b-jV-RZc">
+                    <rect key="frame" x="8" y="20" width="4" height="20"/>
+                    <color key="backgroundColor" red="0.1764705882" green="0.74509803919999995" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="4" id="9dH-7a-ZnB"/>
+                        <constraint firstAttribute="height" constant="20" id="ZLI-HH-urY"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Day 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="unS-1j-fJH">
+                    <rect key="frame" x="20" y="20" width="40" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.21960784310000001" green="0.21960784310000001" blue="0.21960784310000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cJF-yd-MF0">
+                    <rect key="frame" x="8" y="52" width="359" height="100"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_feedback.png" translatesAutoresizingMaskIntoConstraints="NO" id="Fse-58-8E3">
+                            <rect key="frame" x="0.0" y="0.0" width="359" height="100"/>
+                        </imageView>
+                        <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TVX-gK-slj">
+                            <rect key="frame" x="243" y="60" width="72" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="72" id="U3O-7M-S7k"/>
+                                <constraint firstAttribute="height" constant="28" id="XzM-JS-Ht4"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <state key="normal" title="非常满意">
+                                <color key="titleColor" red="0.1764705882" green="0.74509803919999995" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="4"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="feedBackClicked:" destination="d2K-aq-LcK" eventType="touchUpInside" id="iyM-2a-iMq"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uW7-9t-nKs">
+                            <rect key="frame" x="43" y="60" width="72" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="72" id="NVy-D0-vCT"/>
+                                <constraint firstAttribute="height" constant="28" id="rLS-IU-7nT"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <state key="normal" title="不满意">
+                                <color key="titleColor" red="0.1764705882" green="0.74509803919999995" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="4"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="feedBackClicked:" destination="d2K-aq-LcK" eventType="touchUpInside" id="AYO-53-TxW"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="您觉得今天的游学行程如何？" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1yf-DV-X06">
+                            <rect key="frame" x="8" y="20" width="343" height="20"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" red="0.2196078431372549" green="0.2196078431372549" blue="0.2196078431372549" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HZE-MT-8Cr">
+                            <rect key="frame" x="143" y="60" width="72" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="e8a-7m-31E"/>
+                                <constraint firstAttribute="width" constant="72" id="fub-4X-UNn"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <state key="normal" title="满意">
+                                <color key="titleColor" red="0.1764705882" green="0.74509803919999995" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <state key="selected">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="4"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="feedBackClicked:" destination="d2K-aq-LcK" eventType="touchUpInside" id="FLn-Ef-Ka7"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="Fse-58-8E3" secondAttribute="trailing" id="45c-Ua-zRf"/>
+                        <constraint firstItem="HZE-MT-8Cr" firstAttribute="top" secondItem="1yf-DV-X06" secondAttribute="bottom" constant="20" id="6FJ-lS-S7k"/>
+                        <constraint firstItem="1yf-DV-X06" firstAttribute="top" secondItem="cJF-yd-MF0" secondAttribute="top" constant="20" id="9je-zj-iR2"/>
+                        <constraint firstAttribute="height" constant="100" id="EPH-b0-NeJ"/>
+                        <constraint firstItem="TVX-gK-slj" firstAttribute="centerY" secondItem="HZE-MT-8Cr" secondAttribute="centerY" id="Efw-LU-aAC"/>
+                        <constraint firstAttribute="trailing" secondItem="1yf-DV-X06" secondAttribute="trailing" constant="8" id="HcJ-ps-0Ih"/>
+                        <constraint firstItem="HZE-MT-8Cr" firstAttribute="centerX" secondItem="cJF-yd-MF0" secondAttribute="centerX" id="P7T-8D-qnu"/>
+                        <constraint firstItem="Fse-58-8E3" firstAttribute="top" secondItem="cJF-yd-MF0" secondAttribute="top" id="Uv5-Dr-RhU"/>
+                        <constraint firstItem="TVX-gK-slj" firstAttribute="leading" secondItem="HZE-MT-8Cr" secondAttribute="trailing" constant="28" id="Wtx-Uw-2DX"/>
+                        <constraint firstItem="1yf-DV-X06" firstAttribute="leading" secondItem="cJF-yd-MF0" secondAttribute="leading" constant="8" id="dQp-J1-SpX"/>
+                        <constraint firstItem="HZE-MT-8Cr" firstAttribute="centerY" secondItem="uW7-9t-nKs" secondAttribute="centerY" id="egA-eq-vmO"/>
+                        <constraint firstAttribute="bottom" secondItem="Fse-58-8E3" secondAttribute="bottom" id="gFs-O9-QGx"/>
+                        <constraint firstItem="Fse-58-8E3" firstAttribute="leading" secondItem="cJF-yd-MF0" secondAttribute="leading" id="u70-Kz-d4v"/>
+                        <constraint firstItem="HZE-MT-8Cr" firstAttribute="leading" secondItem="uW7-9t-nKs" secondAttribute="trailing" constant="28" id="yNk-uK-Fzq"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.96862745098039216" green="0.95294117647058818" blue="0.92549019607843142" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="sNp-HA-kOB" firstAttribute="top" secondItem="d2K-aq-LcK" secondAttribute="top" id="0E2-Ht-aPI"/>
+                <constraint firstAttribute="trailing" secondItem="cJF-yd-MF0" secondAttribute="trailing" constant="8" id="28d-dN-kai"/>
+                <constraint firstItem="V2b-jV-RZc" firstAttribute="leading" secondItem="d2K-aq-LcK" secondAttribute="leading" constant="8" id="6Yx-U6-M3K"/>
+                <constraint firstAttribute="trailing" secondItem="sNp-HA-kOB" secondAttribute="trailing" id="9CD-Ai-m1V"/>
+                <constraint firstItem="unS-1j-fJH" firstAttribute="leading" secondItem="V2b-jV-RZc" secondAttribute="trailing" constant="8" id="CUl-Dw-q8Z"/>
+                <constraint firstItem="cJF-yd-MF0" firstAttribute="top" secondItem="unS-1j-fJH" secondAttribute="bottom" constant="12" id="GAM-yJ-6a4"/>
+                <constraint firstAttribute="bottom" secondItem="unS-1j-fJH" secondAttribute="bottom" constant="116" id="ThH-sK-mvd"/>
+                <constraint firstItem="cJF-yd-MF0" firstAttribute="leading" secondItem="d2K-aq-LcK" secondAttribute="leading" constant="8" id="VCy-yU-KtR"/>
+                <constraint firstItem="unS-1j-fJH" firstAttribute="centerY" secondItem="V2b-jV-RZc" secondAttribute="centerY" id="WsM-oz-63L"/>
+                <constraint firstItem="sNp-HA-kOB" firstAttribute="leading" secondItem="d2K-aq-LcK" secondAttribute="leading" id="bZq-AS-T3b"/>
+                <constraint firstItem="V2b-jV-RZc" firstAttribute="top" secondItem="d2K-aq-LcK" secondAttribute="top" constant="20" id="wCa-4j-MFQ"/>
+                <constraint firstAttribute="bottom" secondItem="sNp-HA-kOB" secondAttribute="bottom" id="yBK-qo-xTG"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="bottomConstraint" destination="ThH-sK-mvd" id="F39-DU-aYI"/>
+                <outlet property="dayNameLabel" destination="unS-1j-fJH" id="ENo-tj-N6H"/>
+                <outlet property="feedbackView" destination="cJF-yd-MF0" id="d5S-Jv-y0A"/>
+            </connections>
+            <point key="canvasLocation" x="553.5" y="-89"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="bg_feedback.png" width="359" height="100"/>
+    </resources>
+</document>

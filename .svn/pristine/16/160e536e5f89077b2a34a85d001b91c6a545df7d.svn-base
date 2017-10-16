@@ -1,0 +1,40 @@
+//
+//  QuestionCellFrame.m
+//  StudyTour
+//
+//  Created by lqq on 16/6/21.
+//  Copyright © 2016年 lqq. All rights reserved.
+//
+
+#import "QuestionCellFrame.h"
+#import "QuestionModel.h"
+#import "NSString+Frame.h"
+
+#define titleFont  [UIFont fontWithName:@"Helvetica-Bold" size:14]
+
+@implementation QuestionCellFrame
+
+- (void)setModel:(QuestionModel *)model
+{
+    _model = model;
+    
+    CGFloat titleW = ScreenWidth - 40 * 2;
+    CGFloat titleH = [model.title heightWithFont:titleFont withinWidth:titleW ];
+    self.titleFrame = CGRectMake(40, 40, titleW , titleH);
+    
+    CGFloat viewY = CGRectGetMaxY(self.titleFrame) + 40;
+    
+    __block CGFloat height = 0;
+    [model.OptionList.allKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *val = model.OptionList[obj];
+        CGFloat textW = titleW - 10 - 24;
+        CGFloat fontH = [val heightWithFont:[UIFont systemFontOfSize:14] withinWidth:textW];
+        CGFloat y = (fontH + 40) * idx + 40;
+        height = y;
+    }];
+    
+    self.viewFrame = CGRectMake( 40, viewY, titleW, height);
+    
+    self.rowHeight = CGRectGetMaxY(self.viewFrame);
+}
+@end

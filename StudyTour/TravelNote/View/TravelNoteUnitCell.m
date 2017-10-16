@@ -1,0 +1,198 @@
+//
+//  TravelNoteUnitCell.m
+//  StudyTour
+//
+//  Created by use on 16/6/1.
+//  Copyright © 2016年 魏鹏. All rights reserved.
+//
+
+#import "TravelNoteUnitCell.h"
+#import "Particularses.h"
+#import "ParticularsesImages.h"
+#import "NSString+Frame.h"
+
+#define contentFont [UIFont systemFontOfSize:14]
+
+@interface TravelNoteUnitCell () <UIAlertViewDelegate>
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imagesViewHeightConstraint;
+
+@property (weak, nonatomic) IBOutlet UIView *nameHeaderView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *tagLabel;
+@property (weak, nonatomic) IBOutlet UIView *imagesView;
+@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
+
+@property (weak, nonatomic) UIGestureRecognizer *jp_gesture;
+
+@end
+
+@implementation TravelNoteUnitCell
+
+- (void)awakeFromNib {
+    // Initialization code
+}
+
+- (void)setModel:(Particularses *)model
+{
+    _model = model;
+    [self clearImagesView];
+    [self calculateCellHeight];
+    _nameLabel.text = _model.initiatorName;
+    _tagLabel.text = _model.initiatorRole;
+    _contentLabel.text = _model.content;
+    _contentLabel.enabled = YES;
+    
+    if ([_model.initiatorRole isEqualToString:@"导师"]) {
+        _nameHeaderView.backgroundColor = [UIColor themeColor];
+        _tagLabel.textColor = [UIColor themeColor];
+        _tagLabel.layer.borderColor = [UIColor themeColor].CGColor;
+        self.backgroundColor = [UIColor whiteColor];
+        _imagesView.backgroundColor = [UIColor whiteColor];
+    } else {
+        _nameHeaderView.backgroundColor = [UIColor colorWithHex:0xdecab8];
+        _tagLabel.textColor = [UIColor colorWithHex:0xc8b29e];
+        _tagLabel.layer.borderColor = [UIColor colorWithHex:0xc8b29e].CGColor;
+        self.backgroundColor = [UIColor customBackgroundColor];
+        _imagesView.backgroundColor = [UIColor customBackgroundColor];
+    }
+    
+    [self createImagesView];
+}
+
+- (void)calculateCellHeight
+{
+    CGFloat height = 0;
+    CGFloat imagesWidth = ScreenWidth - 16*2;
+    for (ParticularsesImages *imageModel in _model.imageArray) {
+        height += ([imageModel.imgHeight floatValue] * imagesWidth / [imageModel.imgWidth floatValue]);
+    }
+    if (_model.imageArray.count > 0) {
+        height += ((_model.imageArray.count-1) * 8);
+    }
+    _imagesViewHeightConstraint.constant = height;
+}
+
+- (void)createImagesView
+{
+    CGFloat imageX = 0;
+    CGFloat imageY = 0;
+    CGFloat imageWidth = ScreenWidth - 16*2;
+    for (NSInteger i = 0; i < _model.imageArray.count; ++i) {
+        ParticularsesImages *imageModel = _model.imageArray[i];
+        CGFloat imageHeight = ([imageModel.imgHeight floatValue] * imageWidth / [imageModel.imgWidth floatValue]);
+        
+        UIImageView *imageView = [[UIImageView alloc] init];
+        imageView.frame = CGRectMake(imageX, imageY, imageWidth, imageHeight);
+        [_imagesView addSubview:imageView];
+        imageView.userInteractionEnabled = YES;
+        
+        NSURL *imageUrl = [NSURL URLWithString:imageModel.imageUrl];
+
+        [imageView sd_setImageWithURL:imageUrl placeholderImage:nil options:SDWebImageProgressiveDownload|SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            UILongPressGestureRecognizer *longpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(callAlertView:)];
+            [imageView addGestureRecognizer:longpress];
+        }];
+        
+        imageY += (imageHeight + 8);
+    }
+}
+
+- (void)callAlertView:(UILongPressGestureRecognizer *)gesture
+{
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        _jp_gesture = gesture;
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"保存图片" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"保存", nil];
+        [alertView show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        _jp_gesture = nil;
+    } else {
+        [self saveImage:_jp_gesture];
+    }
+}
+
+- (void)saveImage:(UIGestureRecognizer *)gesture
+{
+    UIImageView *imageV = (UIImageView *)(gesture.view);
+    if (imageV.image == nil) {
+        _jp_gesture = nil;
+        return;
+    }
+    UIImageWriteToSavedPhotosAlbum(imageV.image, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo{
+    if (error == nil) {
+        [self showTips:@"保存成功"];
+    } else {
+        [self showTips:@"保存失败，请重新保存"];
+        _jp_gesture = nil;
+    }
+}
+
+- (void)showTips:(NSString *)str {
+    
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:_jp_gesture.view animated:YES];
+    
+    // Configure for text only and offset down
+    hud.mode = MBProgressHUDModeText;
+    hud.labelText = str;
+    hud.margin = 10.f;
+    hud.removeFromSuperViewOnHide = YES;
+    
+    [hud hide:YES afterDelay:1];
+}
+
+- (void)clearImagesView
+{
+    for (id obj in _imagesView.subviews) {
+        if ([obj isKindOfClass:[UIImageView class]]) {
+            UIImageView *imageView = obj;
+            imageView.image = nil;
+        }
+    }
+}
+/*
+- (void)willMoveToSuperview:(UIView *)newSuperview
+{
+    [super willMoveToSuperview:newSuperview];
+    UILongPressGestureRecognizer *longpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressLabel:)];
+    [_contentLabel addGestureRecognizer:longpress];
+}
+
+- (void)longPressLabel:(UILongPressGestureRecognizer *)longpress
+{
+    CGPoint point = [longpress locationInView:_contentLabel];
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+    menuController.menuItems = @[[[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(jp_copy:)]];
+    CGRect rect = CGRectMake(point.x, point.y, 50, 1);
+    [menuController setTargetRect:rect inView:_contentLabel];
+    [menuController setMenuVisible:YES animated:YES];
+}
+
+- (void)jp_copy:(UIMenuController *)menu
+{
+    [UIPasteboard generalPasteboard].string = _contentLabel.text;
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+    NSLog(@"%@",NSStringFromSelector(action));
+    if (action == @selector(jp_copy:) && _contentLabel.text) {
+        return YES;
+    }
+    return NO;
+}
+*/
+
+@end

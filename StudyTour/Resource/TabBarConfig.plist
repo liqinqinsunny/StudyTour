@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>controller</key>
+		<string>InstructionViewController</string>
+		<key>title</key>
+		<string>行前须知</string>
+		<key>image</key>
+		<string>tag</string>
+		<key>image_sel</key>
+		<string>tag_on</string>
+		<key>needLoad</key>
+		<true/>
+	</dict>
+	<dict>
+		<key>controller</key>
+		<string>TaskViewController</string>
+		<key>title</key>
+		<string>游学任务</string>
+		<key>image</key>
+		<string>playlist</string>
+		<key>image_sel</key>
+		<string>playlist_on</string>
+		<key>needLoad</key>
+		<true/>
+	</dict>
+	<dict>
+		<key>controller</key>
+		<string>DynamicViewController</string>
+		<key>title</key>
+		<string>境外动态</string>
+		<key>image</key>
+		<string>bubble-double</string>
+		<key>image_sel</key>
+		<string>bubble-double_on</string>
+		<key>needLoad</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>controller</key>
+		<string>MessageViewController</string>
+		<key>title</key>
+		<string>领队消息</string>
+		<key>image</key>
+		<string>user</string>
+		<key>image_sel</key>
+		<string>user_on</string>
+		<key>needLoad</key>
+		<true/>
+	</dict>
+</array>
+</plist>

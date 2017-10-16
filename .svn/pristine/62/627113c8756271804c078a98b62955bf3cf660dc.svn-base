@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="6K5-dQ-U7k" customClass="TravelNoteFooterView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="26U-h8-aE5">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
+                    <color key="backgroundColor" red="0.1764705882" green="0.74509803919999995" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="Ilv-Yl-Wio"/>
+                    </constraints>
+                    <state key="normal" title="再写点别的" image="ic_traveldetail_writeother.png"/>
+                    <connections>
+                        <action selector="writeOhter:" destination="6K5-dQ-U7k" eventType="touchUpInside" id="71w-se-1oD"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_up.png" translatesAutoresizingMaskIntoConstraints="NO" id="G6M-Wf-haO">
+                    <rect key="frame" x="179" y="60" width="16" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="16" id="Krj-Z4-Khi"/>
+                        <constraint firstAttribute="height" constant="16" id="yCk-I6-gIC"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="继续滑动，查看下一个话题" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0o3-rH-Z3u">
+                    <rect key="frame" x="20" y="84" width="335" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.46666666666666667" green="0.46666666666666667" blue="0.46666666666666667" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&quot;第一顿晚餐&quot;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UfC-h4-R7n">
+                    <rect key="frame" x="20" y="99" width="335" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.1764705882" green="0.74509803919999995" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.96862745100000003" green="0.95294117649999999" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="UfC-h4-R7n" secondAttribute="trailing" constant="20" id="3Iz-lH-YTw"/>
+                <constraint firstItem="UfC-h4-R7n" firstAttribute="top" secondItem="0o3-rH-Z3u" secondAttribute="bottom" id="4rl-ke-wiu"/>
+                <constraint firstItem="0o3-rH-Z3u" firstAttribute="top" secondItem="G6M-Wf-haO" secondAttribute="bottom" constant="8" id="AkM-XJ-WNv"/>
+                <constraint firstAttribute="trailing" secondItem="26U-h8-aE5" secondAttribute="trailing" id="IDc-0b-B2A"/>
+                <constraint firstItem="G6M-Wf-haO" firstAttribute="top" secondItem="26U-h8-aE5" secondAttribute="bottom" constant="12" id="KTz-zv-bDn"/>
+                <constraint firstItem="26U-h8-aE5" firstAttribute="top" secondItem="6K5-dQ-U7k" secondAttribute="top" id="Ndo-As-TmO"/>
+                <constraint firstItem="G6M-Wf-haO" firstAttribute="centerX" secondItem="6K5-dQ-U7k" secondAttribute="centerX" id="ahm-8z-Tjg"/>
+                <constraint firstItem="UfC-h4-R7n" firstAttribute="leading" secondItem="6K5-dQ-U7k" secondAttribute="leading" constant="20" id="alu-XJ-YkC"/>
+                <constraint firstItem="0o3-rH-Z3u" firstAttribute="leading" secondItem="6K5-dQ-U7k" secondAttribute="leading" constant="20" id="fqC-Pn-nnp"/>
+                <constraint firstItem="26U-h8-aE5" firstAttribute="leading" secondItem="6K5-dQ-U7k" secondAttribute="leading" id="im3-R6-kk9"/>
+                <constraint firstAttribute="trailing" secondItem="0o3-rH-Z3u" secondAttribute="trailing" constant="20" id="xpj-Bc-97B"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="nextTravelNoteLabel" destination="UfC-h4-R7n" id="Pt9-B5-c4z"/>
+            </connections>
+            <point key="canvasLocation" x="195.5" y="223"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ic_traveldetail_writeother.png" width="16" height="16"/>
+        <image name="ic_up.png" width="16" height="16"/>
+    </resources>
+</document>

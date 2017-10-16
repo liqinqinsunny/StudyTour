@@ -1,0 +1,41 @@
+//
+//  JiPush.h
+//  NewsReader
+//
+//  Created by hejinbo on 15/7/27.
+//  Copyright (c) 2015年 MyCos. All rights reserved.
+//
+
+#import "JPUSHService.h"
+
+@interface JiPush : NSObject
+
+//注册
++ (void)registerPush;
+//卸载
++ (void)unregisterPush;
+//绑定
++ (void)bindDeviceToken:(NSData *)token;
+//处理收到的APNS消息，向服务器上报收到APNS消息
++ (void)handleNotification:(NSDictionary *)userInfo;
+//本地消息(打开应用时)
++(void)showLocalNotificationAtFront:(UILocalNotification *)notification identifierKey:(NSString *)notificationKey;
+
+//设置别名
++ (void)setAlias:(NSString *)alias;
++ (void)unsetAlias;
+
+//这是主题/标签
++ (void)setTopic:(NSString *)topic;
++ (void)unsetTopic;
+
+//设置多个标签
++ (void)setTopics:(NSArray *)topicArr;
+
+//清空角标计数
++ (void)clearBadge;
+
+// 注册本地通知
++ (void)registerLocalPush;
+@end
+

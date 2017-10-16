@@ -1,0 +1,23 @@
+//
+//  FeecBackHeaderView.h
+//  StudyTour
+//
+//  Created by use on 16/6/12.
+//  Copyright © 2016年 魏鹏. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "TravelNotePerDayModel.h"
+
+typedef void(^FeedBackBlock)(NSInteger index);
+
+@interface FeecBackHeaderView : UITableViewHeaderFooterView
+
+@property (nonatomic, strong) TravelNotePerDayModel *model;
+@property (nonatomic, copy) NSString *feedbackStatus;
+
+@property (nonatomic, copy) FeedBackBlock feedbackBlock;
+
+- (void)setFeedbackBlock:(FeedBackBlock)feedbackBlock;
+
+@end

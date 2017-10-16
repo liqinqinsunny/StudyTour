@@ -1,0 +1,28 @@
+//
+//  QuestionCell.m
+//  StudyTour
+//
+//  Created by lqq on 16/6/17.
+//  Copyright © 2016年 lqq. All rights reserved.
+//
+
+#import "QuestionCell.h"
+
+@interface QuestionCell()
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UIView *sectionView;
+
+@end
+
+@implementation QuestionCell
+
+- (void)awakeFromNib {
+    // Initialization code
+}
+- (void)setTitle:(NSString *)title
+{
+    _title = title;
+    
+    self.titleLabel.text = title;
+}
+@end

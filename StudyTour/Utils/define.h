@@ -1,0 +1,219 @@
+//
+//  define.h
+//  StudyTour
+//
+//  Created by owen on 15/12/16.
+//  Copyright © 2015年 魏鹏. All rights reserved.
+//
+
+/******************* URL宏定义 **********************/
+
+// 0正式版，1测试版
+#define ProductType 1
+
+//// 正式版自动使用正式环境  DEBUG=1 $(inherited)
+//#ifdef OFFICIAL       //如果有定义  表示 是否有某个宏通过 #define 指令定义的宏
+//#undef ProductType    //#undef就是取消一个宏的定义，这个宏所定义的就无效；"
+//#define ProductType 0 //重新定义
+//#endif
+
+//10.65.0.41  10.65.1.2  wy.youxue.xdf.cn/studytour/Login
+#if ProductType == 0
+#define BaseHost     @"http://wy.youxue.xdf.cn"
+#define BasePort     @""
+#else
+#define BaseHost     @"http://10.65.0.41"
+#define BasePort     @":8080"
+#endif
+
+
+#define JPushAppKey @"4308a642f102babc490e8a43" // 生产
+//#define JPushAppKey @"b6a5141ccad81ab0f321485b" // 测试
+//#define JPushAppKey @"821df07a8b7f63cc09f62b22" // 企业
+
+
+//服务器地址
+#define BaseServer   BaseHost BasePort
+// 学生的地址
+//url路径
+//#define BaseURLPath  @"/xdfMaven/studytour/"
+#define BaseURLPath  @"/G1/studytour/"
+//url地址
+#define BaseURL      BaseServer BaseURLPath
+
+// 领队的地址
+//url路径
+#define LeaderBaseURLPath  @"/G1/leader/"
+//url地址
+#define LeaderBaseURL      BaseServer LeaderBaseURLPath
+
+//返回数据接口
+#define DataKey      @"data"
+//接口信息定义
+#define LoginURL     BaseURL "Login.do"
+#define TraveURL     BaseURL "Notice"
+#define MyMessage    BaseURL "GroupPush"
+
+#define TaskSubmitURL     BaseURL "TaskSubmit"
+#define FeedBackSubmitURL     BaseURL "EveFeedback"
+#define SurveySubmitURL     BaseURL "Opinion"
+#define GetDateTimeURL     BaseURL "GetDateTime"
+#define StudyTourTaskURL     BaseURL "StudyTourTask"
+#define TaskParticularsURL     BaseURL "TaskParticulars"
+
+// 版本 1.6.0
+#define CountryShow           LeaderBaseURL "CountryShow.do"
+#define TeacherShow           LeaderBaseURL "TeacherShow.do"
+#define ParticularsSubmit     LeaderBaseURL "ParticularsSubmit.do" // 写游记   提交接口
+#define StuParticularsShow       BaseURL "StuParticularsShow.do" // 获取游记详情
+#define AllTagShow            LeaderBaseURL "AllTagShow.do" // 写游记   所有标签获取
+#define DownloadCount         LeaderBaseURL "DownloadCount.do"
+#define AllGeneralize       BaseURL "AllGeneralize.do"
+#define CarouselShowURL     BaseURL "CarouselShow.do" // 轮播图片
+#define MainShowURL         BaseURL "MainShow.do" // 首页
+#define AgreementUrl        BaseURL "Agreement.do" // 同意协议
+
+#define UpdateLike       BaseURL "UpdateLike.do"    // 点赞
+#define FeedbackSubmit       BaseURL "FeedbackSubmit.do" // 每日反馈
+
+#define QuestionnaireShow   BaseURL "QuestionnaireShow.do" // 调查问卷
+#define QuestionnaireSubmit     BaseURL "QuestionnaireSubmit.do" // 提交问卷
+
+#define ClassRegisterSubmit           BaseURL "ClassRegisterSubmit.do" // 游记详情页面外链点击提交
+
+//安全视频地址 <source type="video/mp4" src="http://youxue.xdf.cn/sp/v.mp4">
+#define vedioUrl         @"http://player.youku.com/embed/XMTQ0NTMyMjQzMg=="
+#define testvedioUrl     @"http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+
+//图片地址前缀
+#define ImageBaseUrl @"http://app.youxue.xdf.cn"
+
+
+/******************* 数据宏定义 **********************/
+//属性数据字段
+#define lanbelHeight       16
+#define consultLabelWidth  110
+
+#define NotDataTxtTag      111
+
+#define LoginTFFontSize    20
+
+//回答测试题数key
+#define TestTitleKey       @"testTotal"
+
+// iOS系统版本
+#define IOSBaseVersion9     9.0
+#define IOSBaseVersion8     8.0
+#define IOSBaseVersion7     7.0
+#define IOSBaseVersion6     6.0
+
+//1.7.0 版本 首页 国家图片的 tag
+#define CountryPictureClicked 130
+
+// 友盟统计
+#define UMengAppKey     @"5682256867e58e42a4001709"
+#define UMengTips       @"版本更新"
+
+#define WxAppId         @"wx061c508e552be27a"
+#define WxAppSecret     @"4c5f89f70568e13364bc603cce5732df"
+
+#define Click_Login_Count             @"wy_s_click_login_count"
+#define Click_LoginSucces_Count       @"wy_s_click_loginSucces_count"
+#define Click_LoginFail_Count         @"wy_s_click_loginfail_count"
+
+#define Click_Notice_Count            @"wy_s_click_notice_count"
+#define Click_Task_Count              @"wy_s_click_task_count"
+#define Click_Message_Count           @"wy_s_click_message_count"
+
+#define Click_Notice_yxnotice_Count   @"wy_s_click_notice_yxnotice_count"
+#define Click_Notice_Trip_Count       @"wy_s_click_notice_trip_count"
+#define Click_Notice_Video_Count      @"wy_s_click_notice_video_count"
+#define Click_Notice_Test_Count       @"wy_s_click_notice_test_count"
+#define Click_Notice_TestSuccess_Count @"wy_s_click_notice_testSuccess_count"
+
+#define Click_Task_Satisfied_Count     @"wy_s_click_task_satisfied_count"
+#define Click_Task_Dissatisfied_Count  @"wy_s_click_task_dissatisfied_count"
+#define Click_Task_Url_Count           @"wy_s_click_task_url_count"
+#define Click_Task_Feedback_Count      @"wy_s_click_task_feedback_count"
+
+#define Click_Task_Phone_Count         @"wy_s_click_task_phone_count"
+#define Click_Task_EverydayTask_Count  @"wy_s_click_task_everydayTask_count"
+
+#define Click_Task_Survey_Url_Count    @"click_task_survey_url_count"
+#define Click_Task_Submit_Survey_Count @"click_task_submit_survey_count"
+
+#define Click_loginOut_Count           @"wy_s_click_loginOut_count"
+
+
+//提示
+
+#define NetWorkTips               @"网络连接失败，请稍后再试"
+#define NotMessageDataTips        @"没有收到消息"
+#define SubmitDataFailTips        @"提交失败"
+#define SubmitDataSuceesTips      @"提交成功"
+#define VideoFinished             @"视频播放完成"
+/******************* 存储宏定义 **********************/
+
+#define HomePath                     NSHomeDirectory()
+#define RootPath                     @"/Library/.StudyTour/"
+#define MyTravelData                 @"mytravel.json"
+#define MyCheckData         RootPath @"mycheck.json"
+
+#define MyTaskData          RootPath @"mytask.json"
+#define MyTaskDetail        RootPath @"mytaskdetail.json"
+#define MyNoticeData        RootPath @"mynotice.json"
+#define MyMessageData       RootPath @"mymessage.json"
+
+// 1.6.0
+#define MainEnroll         RootPath @"MainEnroll.json"
+#define TeacherEnroll      RootPath @"TeacherEnroll.json"
+#define CountryEnroll      RootPath @"CountryEnroll.json"
+#define StudentEnroll      RootPath @"StudentEnroll.json"
+
+
+#define QuestionCellViewClickNotification @"QuestionCellViewClickNotification"
+#define QuestionCellViewkey  @"QuestionCellViewkey"
+#define QuestionStrKey  @"QuestionStrKey"
+
+#define QuestionCellOptionTextChangeNotification @"QuestionCellOptionTextChangeNotification"
+#define QuestionCellOptionTextKey @"QuestionCellOptionTextKey"
+
+#define CurLogigKey         @"loginUserCardId"
+#define AgreementKey        @"AgreementKey"
+#define StuNameKey          @"StuNameKey"
+
+/******************* 设备宏定义 **********************/
+
+#define IsiPad     (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IsiPhone   (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+#define IsRetain   ([[UIScreen mainScreen] scale] >= 2.0)
+#define ScreenWidth ([[UIScreen mainScreen] bounds].size.width)
+#define ScreenHeight ([[UIScreen mainScreen] bounds].size.height)
+
+#define NavAndStatusBarHeight        64
+
+/******************* 日志输出宏定义 **********************/
+#if (DEBUG || TESTCASE)
+#define FxLog(format, ...) NSLog(format, ## __VA_ARGS__)
+#else
+#define FxLog(format, ...)
+#endif
+
+// 日志输出宏
+#define BASE_LOG(cls,sel) FxLog(@"%@-%@",NSStringFromClass(cls), NSStringFromSelector(sel))
+#define BASE_ERROR_LOG(cls,sel,error) FxLog(@"ERROR:%@-%@-%@",NSStringFromClass(cls), NSStringFromSelector(sel), error)
+#define BASE_INFO_LOG(cls,sel,info) FxLog(@"INFO:%@-%@-%@",NSStringFromClass(cls), NSStringFromSelector(sel), info)
+
+// 日志输出函数
+#if (DEBUG || TESTCASE)
+#define BASE_LOG_FUN()         BASE_LOG([self class], _cmd)
+#define BASE_ERROR_FUN(error)  BASE_ERROR_LOG([self class],_cmd,error)
+#define BASE_INFO_FUN(info)    BASE_INFO_LOG([self class],_cmd,info)
+#else
+#define BASE_LOG_FUN()
+#define BASE_ERROR_FUN(error)
+#define BASE_INFO_FUN(info)
+#endif
+
+
+

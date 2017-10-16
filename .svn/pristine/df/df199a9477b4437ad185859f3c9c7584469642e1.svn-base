@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WJPTravelNoteDetailControllerViewController">
+            <connections>
+                <outlet property="likeButton" destination="9bi-Wg-B6t" id="fsv-5H-cSC"/>
+                <outlet property="tableView" destination="BT0-vK-asp" id="q4n-OV-D1y"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BT0-vK-asp">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Klr-RJ-UBD"/>
+                        <outlet property="delegate" destination="-1" id="ujw-q8-TOK"/>
+                    </connections>
+                </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9bi-Wg-B6t">
+                    <rect key="frame" x="299" y="467" width="56" height="56"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="56" id="T6o-lb-gQi"/>
+                        <constraint firstAttribute="width" constant="56" id="r36-S0-Ww6"/>
+                    </constraints>
+                    <state key="normal" image="btn_like.png"/>
+                    <connections>
+                        <action selector="likeButtonClicked:" destination="-1" eventType="touchUpInside" id="omJ-R2-1zg"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="BT0-vK-asp" secondAttribute="bottom" id="6vt-WM-jGV"/>
+                <constraint firstItem="BT0-vK-asp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7gt-qT-AcY"/>
+                <constraint firstAttribute="trailing" secondItem="BT0-vK-asp" secondAttribute="trailing" id="Ad3-6I-Cd9"/>
+                <constraint firstItem="BT0-vK-asp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dOz-aQ-iW1"/>
+                <constraint firstAttribute="trailing" secondItem="9bi-Wg-B6t" secondAttribute="trailing" constant="20" id="q1S-RQ-nsS"/>
+                <constraint firstAttribute="bottom" secondItem="9bi-Wg-B6t" secondAttribute="bottom" constant="144" id="sFr-c3-X3H"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="btn_like.png" width="56" height="56"/>
+    </resources>
+</document>

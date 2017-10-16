@@ -1,0 +1,529 @@
+//
+//  WJPTravelNoteDetailControllerViewController.m
+//  StudyTour
+//
+//  Created by use on 16/6/1.
+//  Copyright © 2016年 魏鹏. All rights reserved.
+//
+
+#import "WJPTravelNoteDetailControllerViewController.h"
+
+#import "Downloader.h"
+#import "NetWorkErrorView.h"
+
+#import "TravelNoteUnitCell.h"
+
+#import "Downloader.h"
+#import "MJExtension.h"
+#import "TravelDetails.h"
+#import "TravelNoteUnitCell.h"
+#import "NSString+Frame.h"
+#import "HeaderView.h"
+#import "UIView+Extension.h"
+#import "Accessorys.h"
+#import "Particularses.h"
+#import "InfomationLearningCell.h"
+#import "WJPCheckDetailDocViewController.h"
+#import "Downloader.h"
+#import "MBProgressHUD.h"
+#import "TitleButton.h"
+#import "UMSocial.h"
+#import "UMSocialSnsService.h"
+#import "NetWorkErrorView.h"
+#import "WJPWriteTravelNoteViewController.h"
+#import "UMSocialWechatHandler.h"
+#import "UMSocialDataService.h"
+#import "WXApiObject.h"
+#import "WXApi.h"
+#import "WJPLinkTaskCell.h"
+#import <SafariServices/SafariServices.h>
+#import "BBSViewController.h"
+
+#import "HeaderView.h"
+#import "TravelNoteFooterView.h"
+#import "TravelNoteCoverModel.h"
+#import "TravelDetailHeader.h"
+
+#define lastPath    [NSString stringWithFormat:@"TravelNoteDataCache%@+%@+%@.json",(self.templateId),(self.groupId),(self.introId)]
+#define cachefilePath   [[HomePath stringByAppendingPathComponent:RootPath] stringByAppendingPathComponent:(lastPath)]
+
+@interface WJPTravelNoteDetailControllerViewController ()<UITableViewDelegate, UITableViewDataSource, UMSocialUIDelegate>
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property(nonatomic,strong) HeaderView *headerView;
+@property (weak, nonatomic) IBOutlet UIButton *likeButton;
+
+@property (nonatomic, assign) BOOL loadCacheSuccess;
+// 模型数据
+@property(nonatomic,strong) TravelDetails *travelDetailsModel;
+
+@end
+
+@implementation WJPTravelNoteDetailControllerViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    [self initViewConfig];
+}
+
+- (void)initViewConfig
+{
+    /**
+     *  设置navigationBar标题
+     */
+    TravelNoteCoverModel *model = _travelArray[_currentIndex];
+    self.navigationItem.title = model.title;
+    
+    /**
+     *  设置游记标题
+     */
+    HeaderView *headerView = [[HeaderView alloc] init];
+    headerView.frame = CGRectMake(0, -56, ScreenWidth, 56);
+    _tableView.tableHeaderView = headerView;
+    _headerView = headerView;
+
+    /**
+     *  设置footerView : "上滑加载下一个游记"
+     */
+    TravelNoteFooterView *footerView = [[TravelNoteFooterView alloc] init];
+    if (_currentIndex == _travelArray.count-1) {
+        footerView.noticeTitle = nil;
+    } else {
+        TravelNoteCoverModel *model = _travelArray[_currentIndex+1];
+        footerView.noticeTitle = model.title;
+    }
+    typeof(self) weakself = self;
+    [footerView setWriteOtherBlock:^{
+//        [weakself writeMore];
+        WJPWriteTravelNoteViewController *noteVc = [[WJPWriteTravelNoteViewController alloc]init];
+        noteVc.incidentId = weakself.introId;
+        noteVc.templateId = weakself.templateId;
+        noteVc.needRequest = NO;
+        noteVc.isFromSuperViewController = YES;
+        noteVc.generalizeId = weakself.travelDetailsModel.generalizeId;
+        noteVc.titleString = weakself.travelDetailsModel.title;
+        noteVc.tagName = weakself.travelDetailsModel.tagName;
+        [weakself.navigationController pushViewController:noteVc animated:YES];
+    }];
+    _tableView.tableFooterView = footerView;
+    /**
+     *  设置headerView : "下拉加载上一个游记"
+     */
+    TravelDetailHeader *upHeaderView = [[TravelDetailHeader alloc] init];
+    upHeaderView.frame = CGRectMake(0, -80, ScreenWidth, 80);
+    if (_currentIndex == 0) {
+        upHeaderView.noticeTitle = nil;
+    } else {
+        TravelNoteCoverModel *model = _travelArray[_currentIndex-1];
+        upHeaderView.noticeTitle = model.title;
+    }
+    [_tableView addSubview:upHeaderView];
+    
+    /**
+     *  分享
+     */
+    UIBarButtonItem *shareItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"ic_traveldetails_share.png"] style:UIBarButtonItemStyleDone target:self action:@selector(share)];
+    self.navigationItem.rightBarButtonItem = shareItem;
+    /**
+     *  注册 cell
+     */
+    [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([TravelNoteUnitCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([TravelNoteUnitCell class])];
+    [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([InfomationLearningCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([InfomationLearningCell class])];
+    [_tableView registerNib:[UINib nibWithNibName:NSStringFromClass([WJPLinkTaskCell class]) bundle:nil] forCellReuseIdentifier:NSStringFromClass([WJPLinkTaskCell class])];
+}
+
+- (void)initDataConfig
+{
+    TravelNoteCoverModel *model = _travelArray[_currentIndex];
+    _templateId = model.templateId;
+//    _groupId = 
+}
+
+#pragma mark - 再写一点
+- (void)writeMore
+{
+    WJPWriteTravelNoteViewController *noteVc = [[WJPWriteTravelNoteViewController alloc]init];
+    noteVc.incidentId = self.introId;
+    noteVc.templateId = self.templateId;
+    noteVc.needRequest = NO;
+    noteVc.isFromSuperViewController = YES;
+    noteVc.generalizeId = self.travelDetailsModel.generalizeId;
+    noteVc.titleString = self.travelDetailsModel.title;
+    noteVc.tagName = self.travelDetailsModel.tagName;
+    [self.navigationController pushViewController:noteVc animated:YES];
+}
+
+#pragma mark -- 分享
+- (void)share
+{
+    //分享内嵌文字
+    NSMutableString *url = [self.travelDetailsModel.shareUrl mutableCopy];
+    if (![url isEqualToString:@""]) {
+        [url appendFormat:@"?groupId=%@&introId=%@#%@",self.groupId,self.introId,self.templateId];
+    }
+    NSString *shareText = [NSString stringWithFormat:@"%@ %@ %@",self.groupId, self.travelDetailsModel.incidentName,self.travelDetailsModel.title];
+    //分享内嵌图片
+    UIImage *shareImage = [[UIImage alloc]init];
+    if (![self.travelDetailsModel.coverUrl isEqualToString:@""]) {
+        shareImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:self.travelDetailsModel.coverUrl]]];
+    }
+    
+    
+    //调用快速分享接口
+    //如果需要分享回调，请将delegate对象设置self，并实现下面的回调方法
+    [UMSocialData defaultData].extConfig.title = shareText;//@"游学领队";
+    [UMSocialData defaultData].extConfig.wechatFavoriteData.url = url; //微信收藏
+    [UMSocialData defaultData].extConfig.wechatTimelineData.url = url; //分享到微信朋友圈内容
+    [UMSocialData defaultData].extConfig.wechatSessionData.url = url; //分享到微信好友内容
+    
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:UMengAppKey
+                                      shareText:@""
+                                     shareImage:shareImage
+                                shareToSnsNames:@[UMShareToWechatSession,UMShareToWechatFavorite,UMShareToWechatTimeline]
+                                       delegate:self];
+}
+
+#pragma mark -- 加载数据
+- (void)loadTravelNoteDataFromServer
+{
+    TravelNoteCoverModel *model = _travelArray[_currentIndex];
+    
+    Downloader *downloader = [[Downloader alloc] init];
+    NSMutableDictionary *param = [NSMutableDictionary dictionary];
+    // templateId:游记概论Id
+    param[@"templateId"] = model.templateId;
+//    // groupId：团号
+//    param[@"groupId"] = self.groupId;
+    // introId：事件Id
+    param[@"introId"] = self.introId;
+    // groupId：团号
+    param[@"groupId"] = @"SUKLX15104";
+    // 缓存数据
+    NSDictionary *tempdict = [self readSaveData:cachefilePath];
+    
+    [downloader POST:StuParticularsShow cachePath:cachefilePath param:param wating:^{
+    } fail:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_loadCacheSuccess) {
+                [self loadTravelNoteDataFromCache];
+                [self showTips:NetWorkTips] ;
+            } else {
+                [self addNetWorkErrorView];
+            }
+        });
+    } success:^(NSDictionary *originData) {
+        // 如果缓存数据和现在获取的数据一样的就返回
+        if ([tempdict isEqualToDictionary:originData]) {
+            return ;
+        }
+        [self ParseData:originData];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.headerView.travelDetailsModel = self.travelDetailsModel;
+            [_tableView reloadData];
+        });
+        
+    } refresh:YES];
+}
+
+// 添加错误提示页
+- (void)addNetWorkErrorView
+{
+    NetWorkErrorView *errorView = [[NetWorkErrorView alloc] init];
+    errorView.frame = CGRectMake(0, 0, ScreenWidth, ScreenHeight-64);
+    __weak typeof(errorView) _ev = errorView;
+    __weak typeof(self) weakself = self;
+    [errorView setOperateBlock:^{
+        __strong NetWorkErrorView *_sev = _ev;
+        [_sev removeFromSuperview];
+        [weakself loadTravelNoteDataFromServer];
+        _sev = nil;
+    }];
+    [self.view addSubview:errorView];
+}
+
+- (void)loadTravelNoteDataFromCache
+{
+    NSDictionary *dict =[self readSaveData:cachefilePath];
+    if(!dict){
+        _loadCacheSuccess = NO;
+        return;
+    }else
+    {
+        _loadCacheSuccess = YES;
+        [self ParseData:dict];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.headerView.travelDetailsModel = self.travelDetailsModel;
+            [_tableView reloadData];
+        });
+    }
+}
+
+// 读取缓存的数据
+- (NSDictionary *)readSaveData:(NSString *)filePath
+{
+    NSData *data = [NSData dataWithContentsOfFile:filePath];
+    if (!data) {
+        return nil;
+    }
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+    if(dict != nil){
+        return dict;
+    }
+    return nil;
+}
+
+// 解析数据
+- (void)ParseData:(NSDictionary *)dict
+{
+    self.travelDetailsModel = [TravelDetails mj_objectWithKeyValues:dict];
+    if (self.travelDetailsModel.particularses.count > 0) {
+        NSMutableArray *tempArray = [self.travelDetailsModel.particularses mutableCopy];
+        Particularses *jpmodel = tempArray[0];
+        NSArray *accessoryArray = jpmodel.accessorys;
+        
+        for (NSInteger i = 0; i < accessoryArray.count; ++i) {
+            WJPTaskModel *model = [WJPTaskModel createWJPTaskModelWithDict:accessoryArray[i]];
+            model.noCustomBackgroundColor = YES;
+            [tempArray insertObject:model atIndex:i+1];
+            
+        }
+        self.travelDetailsModel.particularses = [tempArray copy];
+    }
+}
+- (void)updateDownloadCountToServerWithTaskId:(NSString *)taskId
+{
+    Downloader *downloader = [[Downloader alloc] init];
+    NSDictionary *param = @{@"taskId":taskId,
+                            @"taskType":@"travel"};
+    [downloader POST:DownloadCount param:param wating:^{
+        
+    } fail:^{
+        
+    } success:^(NSDictionary *originData) {
+        
+    } refresh:YES];
+}
+/**
+ *  提交点赞
+ */
+- (void)updateLikeToServer
+{
+    Downloader *downloader = [[Downloader alloc] init];
+    NSDictionary *param = @{@"templateId":_templateId};
+    [downloader POST:UpdateLike param:param wating:^{
+        
+    } fail:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _likeButton.enabled = YES;
+        });
+    } success:^(NSDictionary *originData) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _likeButton.enabled = YES;
+        });
+    } refresh:YES];
+}
+
+#pragma mark -- UITable View Data Source
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.travelDetailsModel.particularses.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id model = self.travelDetailsModel.particularses[indexPath.row];
+    if ([model isKindOfClass:[WJPTaskModel class]]) {
+        return 57;
+    } else {
+        Particularses *p_model = model;
+        return p_model.cellHeight;
+    }
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    id model = self.travelDetailsModel.particularses[indexPath.row];
+    if ([model isKindOfClass:[WJPTaskModel class]]) {
+        WJPTaskModel *taskModel = model;
+        if ([taskModel.type integerValue] == 1) {
+            InfomationLearningCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([InfomationLearningCell class]) forIndexPath:indexPath];
+            cell.model = taskModel;
+            if ([[NSUserDefaults standardUserDefaults] valueForKey:[NSString stringWithFormat:@"wjpfile, %@", taskModel.taskId]]) {
+                cell.persent = 1;
+            }
+            cell.height = 56;
+            return cell;
+        }
+        else if ([taskModel.type integerValue] == 3)
+        {
+            WJPLinkTaskCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([WJPLinkTaskCell class]) forIndexPath:indexPath];
+            cell.model = model;
+            
+            cell.height = 56;
+            return cell;
+        }
+    } else {
+        TravelNoteUnitCell *cell = [_tableView dequeueReusableCellWithIdentifier:NSStringFromClass([TravelNoteUnitCell class]) forIndexPath:indexPath];
+        Particularses *particularsModel = self.travelDetailsModel.particularses[indexPath.row];
+        cell.model = particularsModel;
+        return cell;
+    }
+    return  nil;
+}
+
+
+#pragma mark -- UITable View Delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    id taskModel = self.travelDetailsModel.particularses[indexPath.row];
+    if ([taskModel isKindOfClass:[WJPTaskModel class]]) {
+        WJPTaskModel *model = taskModel;
+        
+        if ([model.state isEqualToString:@"0"]) {
+            return;
+        }
+        
+        if ([model.type integerValue] == 100) {
+            // 分割用的 Cell
+            return;
+        }else if ([model.type integerValue] == 3) {
+            // 外链任务 Cell
+            [self gotoURLWithString:model.link];
+            return;
+        }else if ([model.type integerValue] != 1) {
+            return;
+        }
+        
+        NSString *fileName = [model.accessory componentsSeparatedByString:@"/"].lastObject;
+        NSString *filePath = [NSString stringWithFormat:@"/Documents/%@", fileName];
+        NSString *savedPath = [[FileUtility sandboxHomePath] stringByAppendingString:filePath];
+        
+        if ([[[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"wjpfile, %@", model.taskId]] isEqualToString:@"已下载"]) {
+            /**
+             *  查看文件界面
+             */
+            WJPCheckDetailDocViewController *checkVC = [[WJPCheckDetailDocViewController alloc] init];
+            checkVC.filePath = savedPath;
+            checkVC.navTitle = model.title;
+            [self.navigationController pushViewController:checkVC animated:YES];
+            
+            return;
+        }
+        
+        InfomationLearningCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        
+        Downloader *downloader = [[Downloader alloc] init];
+        [downloader downloadFileWithOption:nil
+                             withURLString:model.accessory
+                                 savedPath:savedPath
+                           downloadSuccess:^(NSString *path) {
+                               [[NSUserDefaults standardUserDefaults] setValue:@"已下载" forKey:[NSString stringWithFormat:@"wjpfile, %@", model.taskId]];
+                               cell.downloadCount = cell.downloadCount+1;
+                               [self updateDownloadCountToServerWithTaskId:model.taskId];
+                           } downloadFailure:^(NSError *error) {
+                               cell.persent = 0;
+                               [self showTips:@"网络连接失败，请稍后再试"];
+                           } progress:^(float progress) {
+                               cell.persent = progress;
+                           }];
+    }
+}
+
+#pragma mark -- UIScroll View Delegate
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    NSLog(@"???????(%f)*****(%f)*****", scrollView.contentOffset.y, scrollView.contentSize.height);
+    if (scrollView.contentOffset.y > (scrollView.contentSize.height-ScreenHeight+80)) {
+        if (_currentIndex >= _travelArray.count-1) {
+            return;
+        }
+        WJPTravelNoteDetailControllerViewController *svc = [[WJPTravelNoteDetailControllerViewController alloc] init];
+        svc.introId = _introId;
+        svc.travelArray = _travelArray;
+        svc.currentIndex = _currentIndex + 1;
+        [self.navigationController.view.layer addAnimation:[self getTransitionUp:YES] forKey:kCATransition];
+        [self.navigationController pushViewController:svc animated:NO];
+    } else if (scrollView.contentOffset.y < (-64-80)) {
+        if (_currentIndex <= 0) {
+            return;
+        }
+        WJPTravelNoteDetailControllerViewController *svc = [[WJPTravelNoteDetailControllerViewController alloc] init];
+        svc.introId = _introId;
+        svc.travelArray = _travelArray;
+        svc.currentIndex = _currentIndex - 1;
+        [self.navigationController.view.layer addAnimation:[self getTransitionUp:NO] forKey:kCATransition];
+        [self.navigationController pushViewController:svc animated:NO];
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSLog(@"********(%f)*****(%f)*****", scrollView.contentOffset.y, [self getTableViewHeight]);
+}
+
+-(float)getTableViewHeight
+{
+    [self.tableView layoutIfNeeded];
+    return self.tableView.contentSize.height;
+}
+
+#pragma mark -- 转场动画
+- (CATransition *)getTransitionUp:(BOOL)isUp
+{
+    CATransition *transition = [CATransition animation];
+    transition.type = kCATransitionPush;
+    if (isUp) {
+        transition.subtype = kCATransitionFromTop;
+    } else {
+        transition.subtype = kCATransitionFromBottom;
+    }
+    transition.duration = 0.75;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
+    return transition;
+}
+
+#pragma mark -- 跳转&点击
+- (void)gotoURLWithString:(NSString *)urlString
+{
+    CGFloat systemVersion = [[UIDevice currentDevice].systemVersion floatValue];
+    if (systemVersion >= 9.0) {
+        SFSafariViewController *sfvc = [[SFSafariViewController alloc] initWithURL:[NSURL URLWithString:urlString]];
+        //            _needChangeStatusColor = NO;
+        [self presentViewController:sfvc animated:YES completion:nil];
+    } else {
+        BBSViewController *bbsvc = [[BBSViewController alloc] init];
+        bbsvc.urlString = urlString;
+        [self.navigationController pushViewController:bbsvc animated:YES];
+    }
+}
+
+- (IBAction)likeButtonClicked:(UIButton *)sender {
+    sender.enabled = NO;
+    [self updateLikeToServer];
+}
+
+#pragma mark -- Life Circle
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self initDataConfig];
+    [self loadTravelNoteDataFromCache];
+    [self loadTravelNoteDataFromServer];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)back:(UIBarButtonItem *)btn
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+
+@end
